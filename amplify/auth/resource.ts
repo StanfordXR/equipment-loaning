@@ -23,10 +23,12 @@ export const auth = defineAuth({
         'COGNITO_ADMIN'  // used to call `fetchUserAttributes()`
       ],
       callbackUrls: [
-        'http://localhost:3000'
+        'http://localhost:3000',
+        'https://equipment.stanfordxr.org'
       ],
       logoutUrls: [
-        'http://localhost:3000'
+        'http://localhost:3000',
+        'https://equipment.stanfordxr.org'
       ],
     }
   },
