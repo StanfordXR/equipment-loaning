@@ -37,7 +37,7 @@ const schema = a.schema({
     accessories: a.string().array(),
 
     equipmentType: a.belongsTo('EquipmentType', 'id'),
-    equipmentRequests: a.hasMany('EquipmentRequest', 'equipmentId')
+    currentEquipmentRequest: a.hasOne('EquipmentRequest', 'equipmentId'),
   }),
 
   
