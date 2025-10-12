@@ -9,7 +9,7 @@ a sandbox, run the following terminal commands. If you use AWS for other purpose
 may need to specify a profile for each command (with the `--profile` flag):
 ```
 aws sso login --profile [PROFILE NAME (if applicable)]
-npx ampx sandbox
+npx ampx sandbox --profile [PROFILE NAME (if applicable)]
 ```
 
 If this is your first time setting up your local machine, you may need to run the following command:
