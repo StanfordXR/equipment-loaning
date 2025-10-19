@@ -1,4 +1,5 @@
 import { defineAuth, secret } from "@aws-amplify/backend";
+import { ADMIN_GROUP } from './constants';
 
 export const auth = defineAuth({
   loginWith: {
@@ -32,4 +33,6 @@ export const auth = defineAuth({
       ],
     }
   },
+
+  groups: [ADMIN_GROUP]
 });
