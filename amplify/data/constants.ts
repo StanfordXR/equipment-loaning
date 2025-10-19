@@ -10,3 +10,5 @@ export enum RequestStatus {
     CHECKED_OUT = 'CHECKED_OUT',
     RETURNED = 'RETURNED'
 }
+
+export const ADMIN_GROUP: string = 'admin';

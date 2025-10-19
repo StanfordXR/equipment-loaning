@@ -26,7 +26,7 @@ export default function App() {
         }
       }
 
-      console.log(await client.models.Todo.list());
+      // console.log(await client.models.Period.list());
     };
     loadUser();
   }, []);

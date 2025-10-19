@@ -1,5 +1,6 @@
 import { type ClientSchema, a, defineData } from '@aws-amplify/backend';
 import { PeriodType, RequestStatus } from './constants'
+import { ADMIN_GROUP } from './constants';
 
 const schema = a.schema({
   Period: a.model({
@@ -10,25 +11,33 @@ const schema = a.schema({
     endDateTime: a.datetime().required(),
 
     requests: a.hasMany('Request', 'id')
-  }),
-  
+  })
+    .authorization(allow => [
+      allow.group(ADMIN_GROUP),
+      allow.authenticated().to(['get', 'list'])
+    ]),
+
   Request: a.model({
     id: a.id().required(),
-    user: a.string().required(),
     status: a.enum(Object.values(RequestStatus)),
-    
+
     period: a.belongsTo('Period', 'id'),
     equipmentRequests: a.hasMany('EquipmentRequest', 'requestId')
   })
     .authorization(allow => [
-      allow.ownerDefinedIn('user')
+      allow.owner(),
+      allow.group(ADMIN_GROUP)
     ]),
 
   EquipmentType: a.model({
     id: a.id().required(),
     name: a.string().required(),
     equipments: a.hasMany('Equipment', 'id')
-  }),
+  })
+    .authorization(allow => [
+      allow.group(ADMIN_GROUP),
+      allow.authenticated().to(['get', 'list'])
+    ]),
 
   Equipment: a.model({
     id: a.id().required(),
@@ -38,9 +47,12 @@ const schema = a.schema({
 
     equipmentType: a.belongsTo('EquipmentType', 'id'),
     currentEquipmentRequest: a.hasOne('EquipmentRequest', 'equipmentId'),
-  }),
+  })
+    .authorization(allow => [
+      allow.group(ADMIN_GROUP),
+      allow.authenticated().to(['get', 'list'])
+    ]),
 
-  
   EquipmentRequest: a.model({
     equipmentId: a.id().required(),
     requestId: a.id().required(),
@@ -49,9 +61,11 @@ const schema = a.schema({
     equipment: a.belongsTo('Equipment', 'equipmentId'),
     request: a.belongsTo('Request', 'requestId')
   })
-}).authorization(allow => [
-  allow.authenticated()  // TODO -- change to be more granular
-]);
+    .authorization(allow => [
+      allow.owner(),
+      allow.group(ADMIN_GROUP)
+    ])
+});
 
 export type Schema = ClientSchema<typeof schema>;
 
