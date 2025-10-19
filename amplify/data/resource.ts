@@ -1,6 +1,6 @@
 import { type ClientSchema, a, defineData } from '@aws-amplify/backend';
 import { PeriodType, RequestStatus } from './constants'
-import { ADMIN_GROUP } from './constants';
+import { ADMIN_GROUP } from './../auth/constants';
 
 const schema = a.schema({
   Period: a.model({
