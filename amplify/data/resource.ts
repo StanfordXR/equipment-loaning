@@ -10,6 +10,7 @@ const schema = a.schema({
     startDateTime: a.datetime().required(),
     endDateTime: a.datetime().required(),
 
+    loanableEquipment: a.hasMany('Equipment', 'id'),
     requests: a.hasMany('Request', 'id')
   })
     .authorization(allow => [
@@ -47,6 +48,7 @@ const schema = a.schema({
 
     equipmentType: a.belongsTo('EquipmentType', 'id'),
     currentEquipmentRequest: a.hasOne('EquipmentRequest', 'equipmentId'),
+    period: a.belongsTo('Period', 'id')
   })
     .authorization(allow => [
       allow.group(ADMIN_GROUP),
