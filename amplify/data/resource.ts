@@ -9,6 +9,7 @@ const schema = a.schema({
     periodType: a.enum(Object.values(PeriodType)),
     startDateTime: a.datetime().required(),
     endDateTime: a.datetime().required(),
+    acceptingRequests: a.boolean().required(),
 
     loanableEquipment: a.hasMany('Equipment', 'id'),
     requests: a.hasMany('Request', 'id')
