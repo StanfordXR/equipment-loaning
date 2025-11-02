@@ -7,12 +7,16 @@ interface TextInputWithLabelProps {
     placeholder?: string;
     value: string;
     onChange: (val: string) => void;
+    isRequired?: boolean;
 }
 
-export function TextInputWithLabel({ label, inputID, placeholder, value, onChange }: TextInputWithLabelProps) {
+export function TextInputWithLabel({ label, inputID, placeholder, value, onChange, isRequired = true }: TextInputWithLabelProps) {
     return (
         <div className='grid w-full gap-2'>
-            <Label htmlFor={inputID}>{label}</Label>
+            <Label htmlFor={inputID} className='gap-1'>
+                {label}
+                {isRequired && <span className='text-red-500'>*</span>}
+            </Label>
             <Input
                 id={inputID}
                 placeholder={placeholder}
