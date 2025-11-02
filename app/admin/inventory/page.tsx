@@ -1,6 +1,8 @@
 import generateSSRClient from '@/app/utils/generate-ssr-client';
 import EquipmentTypeTable from './tables/equipment-type-table';
 import { selectionSet } from './tables/equipment-type-config';
+import Container from '@/components/primitives/container';
+import Title from '@/components/primitives/text/title';
 
 export default async function AdminInventoryPage() {
   const client = generateSSRClient();
@@ -13,11 +15,9 @@ export default async function AdminInventoryPage() {
   }
 
   return (
-    <div className='w-full'>
-      <div className='mx-auto px-4 py-8'>
-        <h1 className='text-3xl font-bold mb-6'>Admin Inventory</h1>
+    <Container className='pt-20'>
+        <Title>Inventory</Title>
         <EquipmentTypeTable data={equipmentTypes.data} />
-      </div>
-    </div>
+    </Container>
   )
 }

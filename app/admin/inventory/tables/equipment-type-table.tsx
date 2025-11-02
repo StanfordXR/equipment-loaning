@@ -2,6 +2,7 @@
 
 import DataTable from '@/components/data-table/data-table'
 import { type EquipmentType, equipmentTypeColumns } from './equipment-type-config'
+import Header from '@/components/primitives/text/header';
 
 interface EquipmentTypeTableProps {
     data: EquipmentType[];
@@ -9,6 +10,9 @@ interface EquipmentTypeTableProps {
 
 export default function EquipmentTypeTable({ data }: EquipmentTypeTableProps) {
     return (
-        <DataTable columns={equipmentTypeColumns} data={data} className='max-w-[800px] mx-auto' />
+        <>
+            <Header>Equipment Types</Header>
+            <DataTable columns={equipmentTypeColumns} data={data} />
+        </>
     );
 }
