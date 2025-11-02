@@ -1,6 +1,6 @@
 'use client'
 
-import periodAutoMatch from '@/app/actions/period-auto-match';
+import generateAutoMatch from '@/app/actions/generate-auto-match';
 import { Button } from '@/components/ui/button';
 
 export default function AdminPeriodsPage() {
@@ -11,7 +11,7 @@ export default function AdminPeriodsPage() {
         This page will display all loan periods for administrative management.
       </p>
 
-      <Button onClick={async () => await periodAutoMatch()}>Match</Button>
+      <Button onClick={async () => await generateAutoMatch({ periodID: '7e98528b-80ed-4392-af40-e433497d827c' })}>Match</Button>
     </div>
   );
 }
