@@ -22,6 +22,7 @@ const schema = a.schema({
   Request: a.model({
     id: a.id().required(),
     status: a.enum(Object.values(RequestStatus)),
+    collateralDescription: a.string().required(),
 
     period: a.belongsTo('Period', 'id'),
     equipmentRequests: a.hasMany('EquipmentRequest', 'requestId'),
