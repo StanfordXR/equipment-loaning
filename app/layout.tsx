@@ -20,7 +20,7 @@ export default function RootLayout({
         <main>
           {children}
         </main>
-        <Toaster richColors closeButton />
+        <Toaster richColors />
       </body>
     </html>
   );
