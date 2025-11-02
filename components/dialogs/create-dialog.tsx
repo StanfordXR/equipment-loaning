@@ -13,6 +13,7 @@ import {
     DialogTrigger,
 } from '@/components/ui/dialog'
 import { ReactNode, useEffect, useState } from 'react';
+import { toast } from 'sonner';
 
 interface CreateDialogProps {
     name: string;
@@ -28,8 +29,13 @@ export default function CreateDialog({ name, description, children, onSubmit, ca
 
     const submit = async () => {
         setIsLoading(true);
-        await onSubmit();
-        setOpen(false);
+        try {
+            await onSubmit();
+            setOpen(false);
+        } catch (err) {
+            console.error(err);
+            toast.error('Something went wrong, see debug console.');
+        }
         setIsLoading(false);
     };
 
