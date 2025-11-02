@@ -1,24 +1,25 @@
 'use client'
 
+import useAmplify from '@/app/hooks/use-amplify';
 import generateClient from '@/app/utils/generate-client';
 import CreateDialog from '@/components/dialogs/create-dialog'
 import { TextInputWithLabel } from '@/components/primitives/interactions/text-input-with-label'
 import { useState } from 'react'
 
 export default function CreateEquipmentTypeDialog() {
+    useAmplify();
     const [name, setName] = useState('');
-
-    const createEquipmentType = () => new Promise<void>(function (resolve, reject) {
-        throw new Error('asdf');
-        setTimeout(function () {
-            resolve()
-        }, 1000);
-    });
     
-    // const client = generateClient();
-    // const result = await client.models.EquipmentType.create({
-    //     name
-    // });
+    const createEquipmentType = async () => {
+        const client = generateClient();
+        const result = await client.models.EquipmentType.create({
+            name
+        });
+
+        if (result.errors) {
+            throw new Error(JSON.stringify(result.errors));
+        }
+    }
 
     return (
         <CreateDialog
