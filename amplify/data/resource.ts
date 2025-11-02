@@ -45,9 +45,9 @@ const schema = a.schema({
 
   Equipment: a.model({
     id: a.id().required(),
-    name: a.string().required(),
     physicalIdentifier: a.string().required(),
     accessories: a.string().array(),
+    notes: a.string(),
 
     equipmentType: a.belongsTo('EquipmentType', 'id'),
     period: a.belongsTo('Period', 'id'),
