@@ -9,7 +9,9 @@ const schema = a.schema({
     periodType: a.enum(Object.values(PeriodType)),
     startDateTime: a.datetime().required(),
     endDateTime: a.datetime().required(),
+    acceptingRequests: a.boolean().required(),
 
+    loanableEquipment: a.hasMany('Equipment', 'id'),
     requests: a.hasMany('Request', 'id')
   })
     .authorization(allow => [
@@ -20,9 +22,11 @@ const schema = a.schema({
   Request: a.model({
     id: a.id().required(),
     status: a.enum(Object.values(RequestStatus)),
+    collateralDescription: a.string().required(),
 
     period: a.belongsTo('Period', 'id'),
-    equipmentRequests: a.hasMany('EquipmentRequest', 'requestId')
+    equipmentRequests: a.hasMany('EquipmentRequest', 'requestId'),
+    assignment: a.belongsTo('Equipment', 'id')
   })
     .authorization(allow => [
       allow.owner(),
@@ -46,7 +50,10 @@ const schema = a.schema({
     accessories: a.string().array(),
 
     equipmentType: a.belongsTo('EquipmentType', 'id'),
-    currentEquipmentRequest: a.hasOne('EquipmentRequest', 'equipmentId'),
+    period: a.belongsTo('Period', 'id'),
+
+    equipmentRequests: a.hasMany('EquipmentRequest', 'equipmentId'),
+    assignment: a.hasOne('Request', 'id')
   })
     .authorization(allow => [
       allow.group(ADMIN_GROUP),
