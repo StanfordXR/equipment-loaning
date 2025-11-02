@@ -1,8 +1,15 @@
 'use client';
 
 import { useSearchParams } from 'next/navigation';
+import { Suspense } from 'react';
 
 export default function NewRequestPage() {
+  return <Suspense fallback={<></>}>
+    <NewRequestPageSuspense />
+  </Suspense>;
+}
+
+function NewRequestPageSuspense() {
   const searchParams = useSearchParams();
   const periodId = searchParams.get('period');
 
