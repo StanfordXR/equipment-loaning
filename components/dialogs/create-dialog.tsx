@@ -32,6 +32,7 @@ export default function CreateDialog({ name, description, children, onSubmit, ca
         try {
             await onSubmit();
             setOpen(false);
+            toast.success(`New ${name.toLowerCase()} created (reload page to see updates)`);
         } catch (err) {
             console.error(err);
             toast.error('Something went wrong, see debug console.');
