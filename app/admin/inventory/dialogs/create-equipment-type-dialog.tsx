@@ -9,6 +9,7 @@ export default function CreateEquipmentTypeDialog() {
     const [name, setName] = useState('');
 
     const createEquipmentType = () => new Promise<void>(function (resolve, reject) {
+        throw new Error('asdf');
         setTimeout(function () {
             resolve()
         }, 1000);

@@ -48,11 +48,8 @@ export default function CreateDialog({ name, description, children, onSubmit, ca
                 <DialogHeader>
                     <DialogTitle>Create {name}</DialogTitle>
                     <DialogDescription className='flex flex-col gap-1'>
-                        <div>{description}</div>
-
-                        <div>
-                            <span className='text-red-500'>*</span> indicates a required field
-                        </div>
+                        {description}
+                        <span><span className='text-red-500'>*</span> indicates a required field</span>
                     </DialogDescription>
                 </DialogHeader>
 
