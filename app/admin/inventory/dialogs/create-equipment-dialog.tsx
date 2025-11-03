@@ -22,8 +22,8 @@ export default function CreateEquipmentDialog() {
         const result = await client.models.Equipment.create({
             id,
             equipmentTypeId,
-            accessories,
-            notes
+            accessories: (accessories.length > 0 ? accessories : null),
+            notes: (notes.length > 0 ? notes : null)
         });
 
         if (result.errors)
