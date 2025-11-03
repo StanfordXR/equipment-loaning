@@ -1,5 +1,7 @@
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import FormLabel from './input-label';
+import InputLabel from './input-label';
 
 interface TextInputWithLabelProps {
     label: string;
@@ -12,17 +14,17 @@ interface TextInputWithLabelProps {
 
 export function TextInputWithLabel({ label, inputID, placeholder, value, onChange, isRequired = true }: TextInputWithLabelProps) {
     return (
-        <div className='grid w-full gap-2'>
-            <Label htmlFor={inputID} className='gap-1'>
-                {label}
-                {isRequired && <span className='text-red-500'>*</span>}
-            </Label>
+        <InputLabel
+            label={label}
+            inputID={inputID}
+            isRequired={isRequired}
+        >
             <Input
                 id={inputID}
                 placeholder={placeholder}
                 value={value}
                 onChange={(e) => onChange(e.target.value)}
             />
-        </div>
+        </InputLabel>
     )
 }
