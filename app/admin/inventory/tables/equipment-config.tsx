@@ -22,11 +22,19 @@ const equipmentTypeColumn: ColumnDef<Equipment> = {
     cell: ({ row }) => row.original.equipmentType.name,
 };
 
-const notes: ColumnDef<Equipment> = {
+const notesColumn: ColumnDef<Equipment> = {
     accessorKey: 'notes',
     header: 'Notes',
     cell: ({ row }) => {
         return row.getValue('notes')
+    }
+};
+
+const accessoriesColumn: ColumnDef<Equipment> = {
+    accessorKey: 'accessories',
+    header: 'Accessories',
+    cell: ({ row }) => {
+        return row.original.accessories?.join(',');
     }
 };
 
@@ -55,7 +63,8 @@ const actionsColumn: ColumnDef<Equipment> = {
 export const equipmentColumns: ColumnDef<Equipment>[] = [
     equipmentTypeColumn,
     idColumn,
-    notes,
+    notesColumn,
+    accessoriesColumn,
     actionsColumn
 ];
 
