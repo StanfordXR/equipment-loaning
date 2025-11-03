@@ -10,13 +10,27 @@ import {
 import { MoreHorizontal } from 'lucide-react';
 import { SelectionSet } from 'aws-amplify/api';
 
-const nameColumn: ColumnDef<EquipmentType> = {
-    accessorKey: 'name',
-    header: 'Equipment Type',
-    cell: ({ row }) => <div className='lowercase'>{row.getValue('name')}</div>,
+const idColumn: ColumnDef<Equipment> = {
+    accessorKey: 'id',
+    header: 'Equipment ID',
+    cell: ({ row }) => row.getValue('id'),
 };
 
-const actionsColumn: ColumnDef<EquipmentType> = {
+const equipmentTypeColumn: ColumnDef<Equipment> = {
+    accessorKey: 'Equipment Type',
+    header: 'Equipment Type',
+    cell: ({ row }) => row.original.equipmentType.name,
+};
+
+const notes: ColumnDef<Equipment> = {
+    accessorKey: 'notes',
+    header: 'Notes',
+    cell: ({ row }) => {
+        return row.getValue('notes')
+    }
+};
+
+const actionsColumn: ColumnDef<Equipment> = {
     id: 'actions',
     header: 'Actions',
     cell: ({ row }) => {
@@ -38,10 +52,12 @@ const actionsColumn: ColumnDef<EquipmentType> = {
     },
 };
 
-export const equipmentTypeColumns: ColumnDef<EquipmentType>[] = [
-    nameColumn,
+export const equipmentColumns: ColumnDef<Equipment>[] = [
+    equipmentTypeColumn,
+    idColumn,
+    notes,
     actionsColumn
 ];
 
-export const equipmentTypeSelectionSet = ['id', 'name'] as const;
-export type EquipmentType = SelectionSet<Schema['EquipmentType']['type'], typeof equipmentTypeSelectionSet>;
+export const equipmentSelectionSet = ['id', 'accessories', 'notes', 'equipmentType.name'] as const;
+export type Equipment = SelectionSet<Schema['Equipment']['type'], typeof equipmentSelectionSet>;

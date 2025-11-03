@@ -11,12 +11,12 @@ interface EquipmentTypeTableProps {
 
 export default function EquipmentTypeTable({ data }: EquipmentTypeTableProps) {
     return (
-        <>
+        <div>
             <div className='flex mb-2'>
                 <Header className='mb-0 grow'>Equipment Types</Header>
                 <CreateEquipmentTypeDialog />
             </div>
             <DataTable columns={equipmentTypeColumns} data={data} />
-        </>
+        </div>
     );
 }
