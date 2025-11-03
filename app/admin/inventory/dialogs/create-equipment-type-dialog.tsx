@@ -19,6 +19,8 @@ export default function CreateEquipmentTypeDialog() {
         if (result.errors) {
             throw new Error(JSON.stringify(result.errors));
         }
+
+        return true;
     }
 
     return (

@@ -20,7 +20,7 @@ interface CreateDialogProps {
     name: string;
     description: string;
     children: ReactNode;
-    onSubmit: () => Promise<void>;
+    onSubmit: () => Promise<boolean>;  // bool denotes if creation was successful
     canSubmit: boolean;
 }
 
@@ -31,9 +31,11 @@ export default function CreateDialog({ name, description, children, onSubmit, ca
     const submit = async () => {
         setIsLoading(true);
         try {
-            await onSubmit();
-            setOpen(false);
-            toast.success(`New ${name.toLowerCase()} created (reload page to see updates)`);
+            const success = await onSubmit();
+            if (success) {
+                setOpen(false);
+                toast.success(`New ${name.toLowerCase()} created (reload page to see updates)`);
+            }
         } catch (err) {
             handleError(err);
         }

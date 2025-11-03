@@ -1,6 +1,7 @@
 'use client'
 
 import useAmplify from '@/app/hooks/use-amplify';
+import { AMPLIFY_ERR_DDB_CONDITION_CHECK_FAILED } from '@/app/utils/constants';
 import generateClient from '@/app/utils/generate-client';
 import handleError from '@/app/utils/handle-error';
 import CreateDialog from '@/components/dialogs/create-dialog'
@@ -8,6 +9,7 @@ import { DataSelect } from '@/components/primitives/interactions/data-select';
 import TextInputList from '@/components/primitives/interactions/text-input-list';
 import { TextInputWithLabel } from '@/components/primitives/interactions/text-input-with-label'
 import { useState } from 'react'
+import { toast } from 'sonner';
 
 export default function CreateEquipmentDialog() {
     useAmplify();
@@ -26,8 +28,16 @@ export default function CreateEquipmentDialog() {
             notes: (notes.length > 0 ? notes : null)
         });
 
-        if (result.errors)
-            handleError(result.errors);
+        if (result.errors) {
+            if (result.errors[0].errorType == AMPLIFY_ERR_DDB_CONDITION_CHECK_FAILED) {
+                toast.info('This physical identifier already exists, please choose a unique value');
+                return false;
+            } else {
+                handleError(result.errors);
+            }
+        }
+
+        return true;
     }
 
     const queryEquipmentTypes = async () => {
