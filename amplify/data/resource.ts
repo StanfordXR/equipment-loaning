@@ -11,7 +11,7 @@ const schema = a.schema({
     endDateTime: a.datetime().required(),
     acceptingRequests: a.boolean().required(),
 
-    loanableEquipment: a.hasMany('Equipment', 'id'),
+    loanableEquipment: a.hasMany('PeriodEquipment', 'periodId'),
     requests: a.hasMany('Request', 'id')
   })
     .authorization(allow => [
@@ -43,6 +43,18 @@ const schema = a.schema({
       allow.authenticated().to(['get', 'list'])
     ]),
 
+  PeriodEquipment: a.model({
+    periodId: a.id().required(),
+    equipmentId: a.id().required(),
+
+    period: a.belongsTo('Period', 'periodId'),
+    equipment: a.belongsTo('Equipment', 'equipmentId'),
+  })
+    .authorization(allow => [
+      allow.group(ADMIN_GROUP),
+      allow.authenticated().to(['get', 'list'])
+    ]),
+
   Equipment: a.model({
     id: a.id().required(),
     physicalIdentifier: a.string().required(),
@@ -50,7 +62,7 @@ const schema = a.schema({
     notes: a.string(),
 
     equipmentType: a.belongsTo('EquipmentType', 'id'),
-    period: a.belongsTo('Period', 'id'),
+    periods: a.hasMany('PeriodEquipment', 'equipmentId'),
 
     equipmentRequests: a.hasMany('EquipmentRequest', 'equipmentId'),
     assignment: a.hasOne('Request', 'id')
