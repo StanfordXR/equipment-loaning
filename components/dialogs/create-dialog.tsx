@@ -1,5 +1,6 @@
 'use client'
 
+import handleError from '@/app/utils/handle-error';
 import { TextInputWithLabel } from '@/components/primitives/interactions/text-input-with-label'
 import { Button } from '@/components/ui/button'
 import {
@@ -34,8 +35,7 @@ export default function CreateDialog({ name, description, children, onSubmit, ca
             setOpen(false);
             toast.success(`New ${name.toLowerCase()} created (reload page to see updates)`);
         } catch (err) {
-            console.error(err);
-            toast.error('Something went wrong, see debug console.');
+            handleError(err);
         }
         setIsLoading(false);
     };
