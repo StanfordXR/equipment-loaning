@@ -12,7 +12,7 @@ const schema = a.schema({
     acceptingRequests: a.boolean().required(),
 
     loanableEquipment: a.hasMany('PeriodEquipment', 'periodId'),
-    requests: a.hasMany('Request', 'id')
+    requests: a.hasMany('Request', 'periodId')
   })
     .authorization(allow => [
       allow.group(ADMIN_GROUP),
@@ -24,7 +24,9 @@ const schema = a.schema({
     status: a.enum(Object.values(RequestStatus)),
     collateralDescription: a.string().required(),
 
-    period: a.belongsTo('Period', 'id'),
+    periodId: a.id().required(),
+    period: a.belongsTo('Period', 'periodId'),
+
     equipmentRequests: a.hasMany('EquipmentRequest', 'requestId'),
     assignment: a.belongsTo('Equipment', 'id')
   })
@@ -36,7 +38,7 @@ const schema = a.schema({
   EquipmentType: a.model({
     id: a.id().required(),
     name: a.string().required(),
-    equipments: a.hasMany('Equipment', 'id')
+    equipments: a.hasMany('Equipment', 'equipmentTypeId')
   })
     .authorization(allow => [
       allow.group(ADMIN_GROUP),
@@ -61,9 +63,10 @@ const schema = a.schema({
     accessories: a.string().array(),
     notes: a.string(),
 
-    equipmentType: a.belongsTo('EquipmentType', 'id'),
-    periods: a.hasMany('PeriodEquipment', 'equipmentId'),
+    equipmentTypeId: a.id().required(),
+    equipmentType: a.belongsTo('EquipmentType', 'equipmentTypeId'),
 
+    periods: a.hasMany('PeriodEquipment', 'equipmentId'),
     equipmentRequests: a.hasMany('EquipmentRequest', 'equipmentId'),
     assignment: a.hasOne('Request', 'id')
   })
