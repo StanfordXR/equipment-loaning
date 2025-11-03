@@ -2,24 +2,48 @@
 
 import useAmplify from '@/app/hooks/use-amplify';
 import generateClient from '@/app/utils/generate-client';
+import handleError from '@/app/utils/handle-error';
 import CreateDialog from '@/components/dialogs/create-dialog'
+import { DataSelect } from '@/components/primitives/interactions/data-select';
+import TextInputList from '@/components/primitives/interactions/text-input-list';
 import { TextInputWithLabel } from '@/components/primitives/interactions/text-input-with-label'
 import { useState } from 'react'
 
 export default function CreateEquipmentDialog() {
     useAmplify();
-    const [name, setName] = useState('');
-    
-    const createEquipment = async () => {
-        // const client = generateClient();
-        // const result = await client.models.Equipment.create({
-        //     name
-        // });
+    const [id, setId] = useState<string>('');
+    const [equipmentTypeId, setEquipmentTypeId] = useState<string>('');
+    const [accessories, setAccessories] = useState<string[]>([]);  // optional
+    const [notes, setNotes] = useState<string>('');  // optional
 
-        // if (result.errors) {
-        //     throw new Error(JSON.stringify(result.errors));
-        // }
-        alert('creating equipment');
+    const client = generateClient();
+
+    const createEquipment = async () => {
+        const result = await client.models.Equipment.create({
+            id,
+            equipmentTypeId,
+            accessories,
+            notes
+        });
+
+        if (result.errors)
+            handleError(result.errors);
+    }
+
+    const queryEquipmentTypes = async () => {
+        const result = await client.models.EquipmentType.list({
+            selectionSet: ['id', 'name']
+        });
+
+        if (result.errors)
+            handleError(result.errors);
+
+        return result.data.map((equipmentType) => {
+            return {
+                label: equipmentType.name,
+                value: equipmentType.id
+            };
+        });
     }
 
     return (
@@ -30,13 +54,33 @@ export default function CreateEquipmentDialog() {
                 Equipment can also be associated with a list of accessories.
             `}
             onSubmit={createEquipment}
-            canSubmit={name != ''}
+            canSubmit={id != '' && equipmentTypeId != ''}
         >
             <TextInputWithLabel
-                inputID='equipment-name'
-                label='Name'
-                value={name}
-                onChange={setName}
+                inputID='equipment-id'
+                label='Physical Identifier'
+                value={id}
+                onChange={setId}
+            />
+            <DataSelect
+                inputID='equipment-equipment-type'
+                label='Equipment Type'
+                queryData={queryEquipmentTypes}
+                onChange={setEquipmentTypeId}
+            />
+            <TextInputList
+                inputID='equipment-accessories'
+                label='Accessories'
+                isRequired={false}
+                onChange={setAccessories}
+                addButtonLabel='Add accessory'
+            />
+            <TextInputWithLabel
+                inputID='equipment-notes'
+                label='Notes'
+                value={notes}
+                onChange={setNotes}
+                isRequired={false}
             />
         </CreateDialog>
     )
