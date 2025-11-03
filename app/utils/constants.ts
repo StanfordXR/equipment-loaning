@@ -1,0 +1,1 @@
+export const AMPLIFY_ERR_DDB_CONDITION_CHECK_FAILED = 'DynamoDB:ConditionalCheckFailedException';
