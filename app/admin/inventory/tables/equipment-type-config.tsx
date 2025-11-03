@@ -13,7 +13,7 @@ import { SelectionSet } from 'aws-amplify/api';
 const nameColumn: ColumnDef<EquipmentType> = {
     accessorKey: 'name',
     header: 'Equipment Type',
-    cell: ({ row }) => <div className='lowercase'>{row.getValue('name')}</div>,
+    cell: ({ row }) => row.getValue('name')
 };
 
 const actionsColumn: ColumnDef<EquipmentType> = {
