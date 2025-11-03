@@ -58,8 +58,7 @@ const schema = a.schema({
     ]),
 
   Equipment: a.model({
-    id: a.id().required(),
-    physicalIdentifier: a.string().required(),
+    id: a.id().required(),  // used as physical identifier
     accessories: a.string().array(),
     notes: a.string(),
 
