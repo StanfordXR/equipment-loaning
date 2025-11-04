@@ -7,6 +7,10 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "StanfordXR Equipment Loaning",
+  robots: {
+    index: false,
+    follow: false
+  }
 };
 
 export default function RootLayout({
