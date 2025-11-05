@@ -53,6 +53,7 @@ const schema = a.schema({
     period: a.belongsTo('Period', 'periodId'),
     equipment: a.belongsTo('Equipment', 'equipmentId'),
   })
+    .identifier(['equipmentId', 'periodId'])
     .authorization(allow => [
       allow.group(ADMIN_GROUP),
       allow.authenticated().to(['get', 'list'])
