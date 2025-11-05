@@ -4,7 +4,7 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { signOut } from 'aws-amplify/auth';
 import { AlertCircleIcon } from 'lucide-react';
-import useAmplify from '../hooks/use-amplify';
+import useAmplify from '@/app/hooks/use-amplify';
 
 export default function NoAdminAccessAlert() {
     useAmplify();
