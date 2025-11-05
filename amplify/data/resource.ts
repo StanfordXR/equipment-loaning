@@ -27,7 +27,7 @@ const schema = a.schema({
     periodId: a.id().required(),
     period: a.belongsTo('Period', 'periodId'),
 
-    equipmentRequests: a.hasMany('EquipmentRequest', 'requestId'),
+    equipmentTypeRequests: a.hasMany('EquipmentTypeRequest', 'requestId'),
     assignment: a.belongsTo('Equipment', 'id')
   })
     .authorization(allow => [
@@ -38,7 +38,8 @@ const schema = a.schema({
   EquipmentType: a.model({
     id: a.id().required(),
     name: a.string().required(),
-    equipments: a.hasMany('Equipment', 'equipmentTypeId')
+    equipments: a.hasMany('Equipment', 'equipmentTypeId'),
+    equipmentTypeRequests: a.hasMany('EquipmentTypeRequest', 'equipmentTypeId')
   })
     .authorization(allow => [
       allow.group(ADMIN_GROUP),
@@ -66,7 +67,6 @@ const schema = a.schema({
     equipmentType: a.belongsTo('EquipmentType', 'equipmentTypeId'),
 
     periods: a.hasMany('PeriodEquipment', 'equipmentId'),
-    equipmentRequests: a.hasMany('EquipmentRequest', 'equipmentId'),
     assignment: a.hasOne('Request', 'id')
   })
     .authorization(allow => [
@@ -74,12 +74,12 @@ const schema = a.schema({
       allow.authenticated().to(['get', 'list'])
     ]),
 
-  EquipmentRequest: a.model({
-    equipmentId: a.id().required(),
+  EquipmentTypeRequest: a.model({
+    equipmentTypeId: a.id().required(),
     requestId: a.id().required(),
     rank: a.integer(),  // optional, for MATCH periods
 
-    equipment: a.belongsTo('Equipment', 'equipmentId'),
+    equipmentType: a.belongsTo('EquipmentType', 'equipmentTypeId'),
     request: a.belongsTo('Request', 'requestId')
   })
     .authorization(allow => [
