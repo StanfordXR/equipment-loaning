@@ -82,6 +82,7 @@ const schema = a.schema({
     equipmentType: a.belongsTo('EquipmentType', 'equipmentTypeId'),
     request: a.belongsTo('Request', 'requestId')
   })
+    .identifier(['equipmentTypeId', 'requestId'])
     .authorization(allow => [
       allow.owner(),
       allow.group(ADMIN_GROUP)
