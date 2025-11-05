@@ -26,7 +26,7 @@ export default async function AdminInventoryPage() {
 	}
 
 	return (
-		<Container className='pt-20'>
+		<Container className='pt-8'>
 			<Title>Inventory</Title>
 			<div className='flex flex-col gap-8'>
 				<EquipmentTypeTable data={equipmentTypes.data} />
