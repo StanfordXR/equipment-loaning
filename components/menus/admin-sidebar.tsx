@@ -3,6 +3,7 @@
 import {
     Sidebar,
     SidebarContent,
+    SidebarFooter,
     SidebarHeader,
     SidebarMenu,
     SidebarMenuButton,
@@ -14,6 +15,7 @@ import Link from 'next/link'
 import { CalendarPlus, Package, ScanBarcode } from 'lucide-react'
 import { ReactNode } from 'react';
 import { usePathname } from 'next/navigation'
+import SignOutButton from '../sign-out-button'
 
 interface SidebarItem {
     href: string;
@@ -60,6 +62,9 @@ export default function AdminSidebar({ children }: Children) {
                         )}
                     </SidebarMenu>
                 </SidebarContent>
+                <SidebarFooter className='pb-4'>
+                    <SignOutButton />
+                </SidebarFooter>
             </Sidebar>
             <div className='px-4 w-full'>
                 {children}
