@@ -52,8 +52,8 @@ export default async function AdminPeriodPage({ params }: AdminPeriodPageProps) 
 }
 
 function PeriodOverview({ period }: { period: PeriodWithDetails }) {
-  const startDateTime = dayjs(period.startDateTime).format('M/D/YY [at] h:m A');
-  const endDateTime = dayjs(period.endDateTime).format('M/D/YY [at] h:m A');
+  const startDateTime = dayjs(period.startDateTime).format('M/D/YY [at] h:mm A');
+  const endDateTime = dayjs(period.endDateTime).format('M/D/YY [at] h:mm A');
 
   return (
     <div>
