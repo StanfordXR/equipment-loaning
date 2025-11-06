@@ -11,6 +11,7 @@ import {
 } from '@/components/ui/select'
 import InputLabel from './input-label';
 import { Suspense, useEffect, useState } from 'react';
+import { cn } from '@/lib/utils';
 
 interface Item {
     label: string;
@@ -24,6 +25,7 @@ interface DataSelectProps {
     isRequired?: boolean;  // only shown if label is nonnull
     onChange: (val: string) => void;
     queryData: () => Promise<Item[]>;
+    className?: string;
 }
 
 export function DataSelect({
@@ -32,7 +34,8 @@ export function DataSelect({
     placeholder = 'Select a value...',
     isRequired = true,
     onChange,
-    queryData
+    queryData,
+    className
 }: DataSelectProps) {
     const [dataOptions, setDataOptions] = useState<Item[]>([]);
 
@@ -46,7 +49,7 @@ export function DataSelect({
 
     const select = (
         <Select onValueChange={onChange}>
-            <SelectTrigger className='w-full'>
+            <SelectTrigger className={cn('w-full', className)}>
                 <SelectValue placeholder={placeholder} />
             </SelectTrigger>
             <SelectContent>
