@@ -12,7 +12,7 @@ export default function AdminPeriodsPage() {
         This page will display all loan periods for administrative management.
       </p>
 
-      <Button onClick={async () => await generateAutoMatch({ periodID: '7e98528b-80ed-4392-af40-e433497d827c' })}>Match</Button>
+      <Button onClick={async () => console.log(await generateAutoMatch({ periodID: 'de821de9-f104-490e-bba9-d14062896b22' }))}>Match</Button>
     </Container>
   );
 }
