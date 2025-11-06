@@ -130,13 +130,6 @@ export default function NewPeriodPage() {
           />
         </InputLabel>
 
-        {JSON.stringify({
-          name,
-          periodType,
-          acceptingRequests,
-          dateRange
-        })}
-        {JSON.stringify(canSubmit)}
         <Button
           disabled={!canSubmit || isLoading}
           onClick={createPeriod}
