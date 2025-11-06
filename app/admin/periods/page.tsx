@@ -45,7 +45,7 @@ export default async function AdminPeriodsPage() {
 
           {activePeriods.length > 0 ?
             <PeriodGrid>
-              {activePeriods.map((period) => <PeriodItem period={period} />)}
+              {activePeriods.map((period) => <PeriodItem period={period} key={period.id} />)}
             </PeriodGrid>
             :
             <div className='text-center text-muted-foreground py-3'>
@@ -61,7 +61,7 @@ export default async function AdminPeriodsPage() {
           </div>
           {inactivePeriods.length > 0 ?
             <PeriodGrid>
-              {inactivePeriods.map((period) => <PeriodItem period={period} />)}
+              {inactivePeriods.map((period) => <PeriodItem period={period} key={period.id} />)}
             </PeriodGrid>
             :
             <div className='text-center text-muted-foreground py-3'>
