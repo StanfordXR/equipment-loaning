@@ -52,7 +52,7 @@ export default function AdminSidebar({ children }: Children) {
                     <SidebarMenu>
                         {sidebarItems.map(({ href, label, icon }) =>
                             <SidebarMenuItem key={href}>
-                                <SidebarMenuButton asChild isActive={href == pathname}>
+                                <SidebarMenuButton asChild isActive={pathname.startsWith(href)}>
                                     <Link href={href}>
                                         {icon}
                                         {label}
