@@ -9,6 +9,10 @@ import { PeriodWithDetails, periodWithDetailsSelectionSet } from './period-detai
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Alert, AlertTitle } from '@/components/ui/alert';
 import { AlertCircleIcon, CircleCheckIcon } from 'lucide-react';
+import { ChildrenAndClassName } from '@/components/types';
+import { Button } from '@/components/ui/button';
+import Link from 'next/link';
+import { cn } from '@/lib/utils';
 
 interface AdminPeriodPageProps {
   params: {
@@ -46,6 +50,7 @@ export default async function AdminPeriodPage({ params }: AdminPeriodPageProps) 
       <div className='flex flex-col gap-8'>
         <PeriodOverview period={period.data} />
         <PeriodLoanableEquipment period={period.data} />
+        <PeriodRequestsSummary period={period.data} />
       </div>
     </Container>
   );
@@ -58,7 +63,7 @@ function PeriodOverview({ period }: { period: PeriodWithDetails }) {
   return (
     <div>
       <Header>Overview</Header>
-      <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-3 gap-y-4 md:gap-y-6'>
+      <PeriodAttributeGrid>
         <PeriodAttribute label='Period Type' value={
           period.periodType == PeriodType.MATCH ? 'Hackathon Loaning' : 'General Loaning'
         } />
@@ -67,7 +72,7 @@ function PeriodOverview({ period }: { period: PeriodWithDetails }) {
         <PeriodAttribute label='New Requests' value={
           period.acceptingRequests ? 'Accepting new requests' : 'Not accepting new requests'
         } />
-      </div>
+      </PeriodAttributeGrid>
     </div>
   );
 }
@@ -130,6 +135,42 @@ function PeriodLoanableEquipment({ period }: { period: PeriodWithDetails }) {
       }
     </div>
   )
+}
+
+function PeriodRequestsSummary({ period }: { period: PeriodWithDetails }) {
+  const assignedRequests = period.requests.filter((r) => r.assignment).length;
+  const totalRequests = period.requests.length;
+
+  return (
+    <div>
+      <div className='mb-2'>
+        <Header className='mb-1'>Requests Summary</Header>
+        <Subtext>
+          Requests are submitted by general users and link to one or more requested equipment types.
+        </Subtext>
+      </div>
+
+      <PeriodAttributeGrid className='mb-2'>
+        <PeriodAttribute label='Assigned request count' value={`${assignedRequests} assigned`} />
+        <PeriodAttribute label='Unassigned request count' value={`${totalRequests - assignedRequests} unassigned`} />
+      </PeriodAttributeGrid>
+
+      <Button asChild>
+        <Link href={`/admin/periods/${period.id}/requests`}>
+          View requests
+        </Link>
+      </Button>
+    </div>
+  );
+}
+
+function PeriodAttributeGrid({ children, className }: ChildrenAndClassName) {
+  return (
+    <div className={cn('grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-3 gap-y-4 md:gap-y-6', className)}>
+      {children}
+    </div>
+  );
+
 }
 
 function PeriodAttribute({ label, value }: { label: string, value: string }) {
