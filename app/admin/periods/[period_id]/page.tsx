@@ -13,6 +13,7 @@ import { ChildrenAndClassName } from '@/components/types';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
+import PeriodNotFound from './components/period-not-found';
 
 interface AdminPeriodPageProps {
   params: {
@@ -33,14 +34,7 @@ export default async function AdminPeriodPage({ params }: AdminPeriodPageProps) 
   }
 
   if (!period.data) {
-    return (
-      <div className='flex items-center justify-center w-full h-full text-muted-foreground'>
-        <div className='text-center'>
-          <div>Period not found.</div>
-          <div>Period id: <span className='font-mono'>{params.period_id}</span></div>
-        </div>
-      </div>
-    );
+    return <PeriodNotFound periodID={params.period_id} />;
   }
 
 
