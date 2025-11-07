@@ -124,8 +124,14 @@ export default function NewPeriodPage() {
             description={`
             Recommended to be true
           `}
-            defaultChecked={true}
-            onChange={setAcceptingRequests}
+            value={acceptingRequests}
+            onChange={(val) => {
+              if (val == 'indeterminate') {
+                handleError('Error: expected boolean for acceptingRequests checkbox, but got indeterminate');
+                return;
+              }
+              setAcceptingRequests(val);
+            }}
             className='mt-1'
           />
         </InputLabel>
