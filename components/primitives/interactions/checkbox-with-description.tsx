@@ -6,7 +6,7 @@ import { CheckedState } from '@radix-ui/react-checkbox';
 interface CheckboxWithLabelProps {
     inputID: string;
     label: string;
-    description: string;
+    description?: string;
     value: CheckedState;
     onChange: (val: CheckedState) => void;
     isRequired?: boolean;
@@ -30,9 +30,12 @@ export default function CheckboxWithDescription({
                     <div>
                         {label} {isRequired && <span className='text-red-500'>*</span>}
                     </div>
-                    <div className="text-muted-foreground text-sm">
-                        {description}
-                    </div>
+                    {
+                        description &&
+                        <div className="text-muted-foreground text-sm">
+                            {description}
+                        </div>
+                    }
                 </Label>
             </div>
         </div>
