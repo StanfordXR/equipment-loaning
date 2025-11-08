@@ -11,6 +11,10 @@ import AssignedRequests from './assigned-requests';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import Header from '@/components/primitives/text/header';
 import { useState } from 'react';
+import generateAutoMatch from '@/app/actions/generate-auto-match';
+import handleError from '@/app/utils/handle-error';
+import { ADMIN_PERIODS_MATCHMAKER_DEFAULT_RANK } from '@/app/utils/constants';
+import { toast } from 'sonner';
 
 export interface Assignment {
     equipmentId: string;
@@ -56,7 +60,7 @@ export default function Requests({ period }: { period: PeriodRequests }) {
                     </Accordion>
                 </div>
                 <div className='col-span-1 flex flex-col gap-4'>
-                    <Matchmaker period={period} />
+                    <Matchmaker period={period} setNewAssignments={setNewAssignments} />
                     <AvailableEquipment period={period} newAssignments={newAssignments} />
                 </div>
             </div>
@@ -64,7 +68,42 @@ export default function Requests({ period }: { period: PeriodRequests }) {
     );
 }
 
-function Matchmaker({ period }: { period: PeriodRequests }) {
+function Matchmaker({ period, setNewAssignments }: { period: PeriodRequests, setNewAssignments: (assignments: Assignment[]) => void }) {
+    const [isLoading, setIsLoading] = useState(false);
+
+    const handleMatch = async () => {
+        const availableEquipment = period.loanableEquipment
+            .map(e => e.equipment)
+            .filter(e => !e.assignment)
+            .map(e => ({
+                equipmentTypeId: e.equipmentTypeId,
+                equipmentId: e.id
+            }));
+
+        const requests = period.requests
+            .filter(request => !request.assignment)
+            .map(request => ({
+                requestId: request.id,
+                equipmentTypeRequests: request.equipmentTypeRequests.map(equipmentTypeRequest => ({
+                    equipmentTypeId: equipmentTypeRequest.equipmentType.id,
+                    rank: equipmentTypeRequest.rank ?? ADMIN_PERIODS_MATCHMAKER_DEFAULT_RANK
+                }))
+            }));
+
+        setIsLoading(true);
+        try {
+            const newAssignments = await generateAutoMatch({
+                availableEquipment,
+                requests
+            });
+            setNewAssignments(newAssignments);
+            toast.info('Populated assignments with matchmaker results');
+        } catch (err: any) {
+            handleError(err);
+        }
+        setIsLoading(false);
+    }
+
     return (
         <Card className='gap-4'>
             <CardHeader>
@@ -77,7 +116,13 @@ function Matchmaker({ period }: { period: PeriodRequests }) {
                 </CardDescription>
             </CardHeader>
             <CardContent>
-                <Button className='w-full' disabled={true}>Run matching algorithm</Button>
+                <Button
+                    className='w-full'
+                    disabled={isLoading}
+                    onClick={handleMatch}
+                >
+                    {isLoading ? 'Loading...' : 'Run matching algorithm'}
+                </Button>
             </CardContent>
         </Card>
     )
