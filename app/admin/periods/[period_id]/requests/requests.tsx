@@ -25,7 +25,7 @@ export default function Requests({ period }: { period: PeriodRequests }) {
             <Title>{period.name} Requests</Title>
             <div className='grid grid-cols-1 lg:grid-cols-3 gap-6'>
                 <div className='col-span1 lg:col-span-2'>
-                    <Accordion type='multiple'>
+                    <Accordion type='multiple' defaultValue={['unassigned-requests']}>
                         {/* Assigned requests */}
                         <AccordionItem value='assigned-requests'>
                             <AccordionTrigger>
