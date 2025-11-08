@@ -227,15 +227,15 @@ describe('generateAutoMatch', () => {
                 {
                     requestId: requestId1,
                     equipmentTypeRequests: [
-                        { equipmentTypeId: equipmentTypeId1, rank: 2 },
-                        { equipmentTypeId: equipmentTypeId2, rank: 1 }
+                        { equipmentTypeId: equipmentTypeId1, rank: 3 },
+                        { equipmentTypeId: equipmentTypeId2, rank: 4 }
                     ]
                 },
                 {
                     requestId: requestId2,
                     equipmentTypeRequests: [
                         { equipmentTypeId: equipmentTypeId1, rank: 1 },
-                        { equipmentTypeId: equipmentTypeId2, rank: 1 }
+                        { equipmentTypeId: equipmentTypeId2, rank: 2 }
                     ]
                 },
             ],
@@ -393,6 +393,33 @@ describe('generateAutoMatch', () => {
                 }
             ]
         };
+        await expect(generateAutoMatch(input)).rejects.toThrow();
+    });
+
+    test('duplicate rank values throws', async () => {
+        const equipmentTypeId1 = 'equipment-type-1';
+        const eqiupmentId1 = 'equipment-1';
+        const equipmentTypeId2 = 'equipment-type-2';
+        const eqiupmentId2 = 'equipment-2';
+
+        const requestId1 = 'request-1';
+
+        const input: PeriodAutoMatchProps = {
+            availableEquipment: [
+                { equipmentTypeId: equipmentTypeId1, equipmentId: eqiupmentId1 },
+                { equipmentTypeId: equipmentTypeId2, equipmentId: eqiupmentId2 }
+            ],
+            requests: [
+                {
+                    requestId: requestId1,
+                    equipmentTypeRequests: [
+                        { equipmentTypeId: equipmentTypeId1, rank: 1 },
+                        { equipmentTypeId: equipmentTypeId2, rank: 1 }
+                    ]
+                }
+            ]
+        };
+
         await expect(generateAutoMatch(input)).rejects.toThrow();
     });
 });
