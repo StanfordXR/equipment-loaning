@@ -3,7 +3,7 @@ import { ReactNode } from 'react';
 
 interface LabelProps {
     label: string;
-    inputID: string;
+    inputID?: string;
     isRequired?: boolean;
     children: ReactNode;
 }

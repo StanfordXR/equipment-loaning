@@ -18,8 +18,7 @@ export default function LoginRedirect() {
                 router.push('/');
                 break;
             case 'signInWithRedirect_failure':
-                console.error(payload);
-                handleError('Something went wrong when trying to sign in (see debug console for full info).');
+                handleError(payload);
                 break;
             default:
                 break;
