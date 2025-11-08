@@ -1,3 +1,4 @@
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
     Select,
@@ -16,7 +17,8 @@ export interface EquipmentSelectItem {
     equipments: {
         equipmentId: string;
         isAvailable: boolean;
-    }[]
+    }[];
+    userRank?: number;
 }
 
 interface EquipmentSelectProps {
@@ -25,6 +27,21 @@ interface EquipmentSelectProps {
     onChange: (equipmentId: string) => void;
     onClearValue: () => void;
 }
+
+const getUserRankLabel = (rank: number) => {
+    // Expects rank >= 1
+    switch (rank) {
+        case 1:
+            return '1st';
+        case 2:
+            return '2nd';
+        case 3:
+            return '3rd';
+        default:
+            return `${rank}th`;
+    }
+}
+
 
 export default function EquipmentSelect({ value, items, onChange, onClearValue }: EquipmentSelectProps) {
     return (
@@ -35,7 +52,12 @@ export default function EquipmentSelect({ value, items, onChange, onClearValue }
             <SelectContent>
                 {items.map((equipmentType) =>
                     <SelectGroup key={equipmentType.equipmentTypeId} className='mb-3'>
-                        <SelectLabel className='uppercase'>{equipmentType.eqiupmentTypeName}</SelectLabel>
+                        <SelectLabel className='flex items-center gap-2'>
+                            <div className='uppercase'>{equipmentType.eqiupmentTypeName}</div>
+                            {equipmentType.userRank &&
+                                <Badge variant='secondary'>User&apos;s {getUserRankLabel(equipmentType.userRank + 1)} choice</Badge>
+                            }
+                        </SelectLabel>
                         {equipmentType.equipments.map((equipment) => {
                             return <SelectItem
                                 value={equipment.equipmentId}
