@@ -15,6 +15,7 @@ import generateAutoMatch from '@/app/actions/generate-auto-match';
 import handleError from '@/app/utils/handle-error';
 import { ADMIN_PERIODS_MATCHMAKER_DEFAULT_RANK } from '@/app/utils/constants';
 import { toast } from 'sonner';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 
 export interface Assignment {
     equipmentId: string;
@@ -110,16 +111,8 @@ function Matchmaker({ period, setNewAssignments }: { period: PeriodRequests, set
                 <CardTitle>
                     Matching Algorithm
                 </CardTitle>
-                <CardDescription className='flex flex-col gap-2'>
-                    <p>Populates Unassigned Requests with the optimal request/equipment matches based on user rankings.</p>
-                    <ul className='list-disc list-inside'>
-                        <li>
-                            Running the algorithm does not propagate matches to users until you select Save Assignments.
-                        </li>
-                        <li>
-                            Running the algorithm will overwrite any current match selections in Unassigned Requests.
-                        </li>
-                    </ul>
+                <CardDescription>
+                    Populates Unassigned Requests with the optimal request/equipment matches based on user rankings.
                 </CardDescription>
             </CardHeader>
             <CardContent>
@@ -130,8 +123,28 @@ function Matchmaker({ period, setNewAssignments }: { period: PeriodRequests, set
                 >
                     {isLoading ? 'Loading...' : 'Run matching algorithm'}
                 </Button>
+                <Dialog>
+                    <div className='flex justify-center pt-1'>
+                        <DialogTrigger asChild>
+                            <Button variant='link' size='sm'>More info</Button>
+                        </DialogTrigger>
+                    </div>
+                    <DialogContent>
+                        <DialogHeader>
+                            <DialogTitle>Matching algorithm considerations</DialogTitle>
+                            <ul className='list-disc list-inside text-sm'>
+                                <li>
+                                    Running the algorithm does not propagate matches to users until you select Save Assignments.
+                                </li>
+                                <li>
+                                    Running the algorithm will overwrite any current match selections in Unassigned Requests.
+                                </li>
+                            </ul>
+                        </DialogHeader>
+                    </DialogContent>
+                </Dialog>
             </CardContent>
-        </Card>
+        </Card >
     )
 }
 
