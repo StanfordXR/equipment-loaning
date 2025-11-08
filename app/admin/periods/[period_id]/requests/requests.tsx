@@ -101,7 +101,7 @@ function AvailableEquipment({ period, newAssignments }: { period: PeriodRequests
                 {
                     availableEquipment.map(({ equipmentTypeName, equipmentId }) => {
                         return (
-                            <Item variant='outline' className='p-3'>
+                            <Item variant='outline' className='p-3' key={equipmentId}>
                                 <ItemContent>
                                     <ItemTitle>{equipmentId}</ItemTitle>
                                     <ItemDescription>{equipmentTypeName}</ItemDescription>
