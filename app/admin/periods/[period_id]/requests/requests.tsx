@@ -3,7 +3,7 @@
 import { PeriodRequests } from './period-requests-config';
 import Container from '@/components/primitives/container';
 import Title from '@/components/primitives/text/title';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Item, ItemContent, ItemDescription, ItemTitle } from '@/components/ui/item';
 import { Button } from '@/components/ui/button';
 import UnassignedRequests from './unassigned-requests';
@@ -71,9 +71,13 @@ function Matchmaker({ period }: { period: PeriodRequests }) {
                 <CardTitle>
                     Matching Algorithm
                 </CardTitle>
+                <CardDescription>
+                    Populates Unassigned Requests with the optimal request/equipment matches based on user rankings.
+                    Running the algorithm does not propagate matches to users until you select Save Assignments.
+                </CardDescription>
             </CardHeader>
             <CardContent>
-                <Button className='w-full'>Run matching algorithm</Button>
+                <Button className='w-full' disabled={true}>Run matching algorithm</Button>
             </CardContent>
         </Card>
     )
