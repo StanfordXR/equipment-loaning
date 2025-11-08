@@ -110,9 +110,16 @@ function Matchmaker({ period, setNewAssignments }: { period: PeriodRequests, set
                 <CardTitle>
                     Matching Algorithm
                 </CardTitle>
-                <CardDescription>
-                    Populates Unassigned Requests with the optimal request/equipment matches based on user rankings.
-                    Running the algorithm does not propagate matches to users until you select Save Assignments.
+                <CardDescription className='flex flex-col gap-2'>
+                    <p>Populates Unassigned Requests with the optimal request/equipment matches based on user rankings.</p>
+                    <ul className='list-disc list-inside'>
+                        <li>
+                            Running the algorithm does not propagate matches to users until you select Save Assignments.
+                        </li>
+                        <li>
+                            Running the algorithm will overwrite any current match selections in Unassigned Requests.
+                        </li>
+                    </ul>
                 </CardDescription>
             </CardHeader>
             <CardContent>
