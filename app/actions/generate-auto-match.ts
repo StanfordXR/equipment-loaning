@@ -32,6 +32,14 @@ interface BipartiteEdge {
  *      referenced in at least one Request
  */
 export default async function generateAutoMatch({ availableEquipment, requests }: PeriodAutoMatchProps): Promise<Assignment[]> {
+    if (availableEquipment.length == 0) {
+        throw new Error('Expected availableEquipment to be of length >0, but got 0');
+    }
+    
+    if (requests.length == 0) {
+        throw new Error('Expected requests to be of length >0, but got 0');
+    }
+
     let edges: BipartiteEdge[] = [];
 
     // For each request...
@@ -39,7 +47,7 @@ export default async function generateAutoMatch({ availableEquipment, requests }
         // For each equipment type request...
         equipmentTypeRequests.map(({ equipmentTypeId, rank }) => {
             // For each available equipment per equipment type...
-            if (rank < 1) {
+            if (rank < 1 || isNaN(rank)) {
                 throw new Error(`Expected rank >= 1 for request id ${requestId}, equipment type id ${equipmentTypeId}, but got ${rank}`);
             }
             const equipments = availableEquipment.filter(e => e.equipmentTypeId == equipmentTypeId);
@@ -53,6 +61,11 @@ export default async function generateAutoMatch({ availableEquipment, requests }
             });
         });
     });
+
+    if (edges.length == 0) {
+        throw new Error('Expected at least one possible request-equipment match, but got none');
+    }
+
     const matching = minimumWeightBipartiteMatch(edges);
     return matching.map(edge => {
         return {
