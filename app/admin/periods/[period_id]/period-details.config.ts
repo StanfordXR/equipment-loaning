@@ -12,5 +12,7 @@ export const periodWithDetailsSelectionSet = [
     'loanableEquipment.equipment.id',
     'loanableEquipment.equipment.assignment.id',
     'loanableEquipment.equipment.equipmentType.name',
+
+    'requests.assignment.id',
 ] as const;
 export type PeriodWithDetails = SelectionSet<Schema['Period']['type'], typeof periodWithDetailsSelectionSet>;

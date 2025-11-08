@@ -66,7 +66,7 @@ export default function AdminSidebar({ children }: Children) {
                     <SignOutButton />
                 </SidebarFooter>
             </Sidebar>
-            <div className='px-4 w-full'>
+            <div className='px-4 pb-4 w-full h-screen overflow-auto'>
                 {children}
             </div>
         </SidebarProvider>

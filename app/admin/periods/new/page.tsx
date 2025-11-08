@@ -16,6 +16,8 @@ import dayjs from 'dayjs';
 import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/navigation';
 import handleError from '@/app/utils/handle-error';
+import LoanableEquipmentChecklist from '../components/loanable-equipment-checklist';
+import { Label } from '@/components/ui/label';
 
 export default function NewPeriodPage() {
   const client = generateClient();
@@ -24,6 +26,7 @@ export default function NewPeriodPage() {
   const [periodType, setPeriodType] = useState<PeriodType>();
   const [acceptingRequests, setAcceptingRequests] = useState<boolean>(true);
   const [dateRange, setDateRange] = useState<DateRange>();
+  const [loanableEquipment, setLoanableEquipment] = useState<string[]>([]);
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -40,7 +43,7 @@ export default function NewPeriodPage() {
   const createPeriod = async () => {
     setIsLoading(true);
 
-    const { data, errors } = await client.models.Period.create({
+    const period = await client.models.Period.create({
       name: name,
       periodType: periodType,
       acceptingRequests: acceptingRequests,
@@ -48,13 +51,33 @@ export default function NewPeriodPage() {
       endDateTime: dateRange?.to?.toISOString() as string
     });
 
-    if (errors) {
-      console.error(errors);
-      handleError('Something went wrong, please see the debug console for more info.');
+    if (period.errors) {
+      handleError(period.errors);
       setIsLoading(false);
-    } else {
-      router.push(`/admin/periods/${data?.id}`);
+      return;
     }
+
+    const periodId = period.data?.id;
+    if (!periodId) {
+      handleError('Expected nonnull created period ID, but got null');
+      return;
+    }
+
+    const loanableEquipmentResults = await Promise.all(loanableEquipment?.map(equipmentId => {
+      return client.models.PeriodEquipment.create({
+        equipmentId,
+        periodId
+      });
+    }));
+
+    loanableEquipmentResults.map(({ errors }) => {
+      if (errors) {
+        // Display the error, but don't prevent redirect
+        handleError(errors);
+      }
+    });
+    router.push(`/admin/periods/${periodId}`);
+
   }
 
   return (
@@ -124,11 +147,30 @@ export default function NewPeriodPage() {
             description={`
             Recommended to be true
           `}
-            defaultChecked={true}
-            onChange={setAcceptingRequests}
+            value={acceptingRequests}
+            onChange={(val) => {
+              if (val == 'indeterminate') {
+                handleError('Error: expected boolean for acceptingRequests checkbox, but got indeterminate');
+                return;
+              }
+              setAcceptingRequests(val);
+            }}
             className='mt-1'
           />
         </InputLabel>
+
+        <div>
+          <div className='mb-3'>
+            <Label className='mb-1'>Loanable Equipment</Label>
+            <Subtext>
+              Equipment that can be loaned out within this period. Note that multiple periods can simultaoneously list
+              a given piece of equipment as loanable.
+            </Subtext>
+          </div>
+          <LoanableEquipmentChecklist
+            onChange={setLoanableEquipment}
+          />
+        </div>
 
         <Button
           disabled={!canSubmit || isLoading}
