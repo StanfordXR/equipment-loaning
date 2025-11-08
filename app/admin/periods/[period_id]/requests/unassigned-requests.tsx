@@ -26,16 +26,29 @@ export default function UnassignedRequests({ period, newAssignments, setNewAssig
     // Here, unassigned requests denote requests that are unassigned at the time of page load --
     // that is, selecting a value from EquipmentSelect will not move the request to Assigned Requests
     const unassignedRequests = period.requests.filter(r => !r.assignment);
-    const equipmentItems: EquipmentSelectItem[] = period.loanableEquipment
-        .map(l => l.equipment)
-        .map(equipment => {
-            return {
-                eqiupmentTypeName: equipment.equipmentType.name,
+
+    // Create object that maps from equipmentId -> EquipmentSelectItem, then decompose into a list after
+    let equipmentSelectItemsObject: { [equipmentId: string]: EquipmentSelectItem } = {};
+    period.loanableEquipment.map(({ equipment }) => {
+        // Create entry for EquipmentSelectItem `equipments`
+        const entry = {
+            equipmentId: equipment.id,
+            isAvailable: !equipment.assignment && !newAssignments.some(assignment => assignment.equipmentId == equipment.id)
+        };
+
+        // If the `equipmentId` already exists in object simply append `entry` to `equipments`; otherwise,
+        // add a new `EquipmentSelectItem` to the object
+        if (equipmentSelectItemsObject[equipment.equipmentTypeId]) {
+            equipmentSelectItemsObject[equipment.equipmentTypeId].equipments.push(entry);
+        } else {
+            equipmentSelectItemsObject[equipment.equipmentTypeId] = {
                 equipmentTypeId: equipment.equipmentTypeId,
-                equipmentId: equipment.id,
-                isAvailable: !equipment.assignment && !newAssignments.some(assignment => assignment.equipmentId == equipment.id)
+                eqiupmentTypeName: equipment.equipmentType.name,
+                equipments: [entry]
             };
-        });
+        }
+    });
+    const equipmentSelectItems = Object.values(equipmentSelectItemsObject);
 
     const addNewAssignment = (equipmentId: string, requestId: string) => {
         const existingAssignmentIndex = newAssignments.findIndex(
@@ -96,7 +109,7 @@ export default function UnassignedRequests({ period, newAssignments, setNewAssig
                         key={request.id}
                     >
                         <EquipmentSelect
-                            items={equipmentItems}
+                            items={equipmentSelectItems}
                             value={
                                 newAssignments.find(assignment => assignment.requestId == request.id)?.equipmentId || ''
                             }

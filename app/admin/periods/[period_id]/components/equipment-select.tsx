@@ -4,15 +4,19 @@ import {
     SelectContent,
     SelectGroup,
     SelectItem,
+    SelectLabel,
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select'
 
+
 export interface EquipmentSelectItem {
     eqiupmentTypeName: string;
     equipmentTypeId: string;
-    equipmentId: string;
-    isAvailable: boolean;
+    equipments: {
+        equipmentId: string;
+        isAvailable: boolean;
+    }[]
 }
 
 interface EquipmentSelectProps {
@@ -29,18 +33,20 @@ export default function EquipmentSelect({ value, items, onChange, onClearValue }
                 <SelectValue placeholder='No equipment selected' />
             </SelectTrigger>
             <SelectContent>
-                <SelectGroup>
-                    {items.map((item) =>
-                        <SelectItem
-                            value={item.equipmentId}
-                            key={item.equipmentId}
-                            disabled={!item.isAvailable && item.equipmentId != value}
-                        >
-                            <span className='font-bold'>{item.equipmentId}</span> ({item.eqiupmentTypeName})
-                        </SelectItem>
-                    )
-                    }
-                </SelectGroup>
+                {items.map((equipmentType) =>
+                    <SelectGroup key={equipmentType.equipmentTypeId} className='mb-3'>
+                        <SelectLabel className='uppercase'>{equipmentType.eqiupmentTypeName}</SelectLabel>
+                        {equipmentType.equipments.map((equipment) => {
+                            return <SelectItem
+                                value={equipment.equipmentId}
+                                key={equipment.equipmentId}
+                                disabled={!equipment.isAvailable && equipment.equipmentId != value}
+                            >
+                                {equipment.equipmentId}
+                            </SelectItem>
+                        })}
+                    </SelectGroup>
+                )}
                 <Button
                     className='w-full mt-2'
                     variant='outline'
