@@ -3,7 +3,7 @@
 import { minimumWeightBipartiteMatch } from 'min-cost-flow';
 import { Assignment } from '@/app/admin/periods/[period_id]/requests/requests';
 
-interface PeriodAutoMatchProps {
+export interface PeriodAutoMatchProps {
     availableEquipment: {
         equipmentTypeId: string;
         equipmentId: string;
@@ -39,9 +39,8 @@ export default async function generateAutoMatch({ availableEquipment, requests }
         // For each equipment type request...
         equipmentTypeRequests.map(({ equipmentTypeId, rank }) => {
             // For each available equipment per equipment type...
-
-            if (rank && rank < 1) {
-                throw `Expected rank >= 1 for request id ${requestId}, equipment type id ${equipmentTypeId}, but got ${rank}`;
+            if (rank < 1) {
+                throw new Error(`Expected rank >= 1 for request id ${requestId}, equipment type id ${equipmentTypeId}, but got ${rank}`);
             }
             const equipments = availableEquipment.filter(e => e.equipmentTypeId == equipmentTypeId);
 
