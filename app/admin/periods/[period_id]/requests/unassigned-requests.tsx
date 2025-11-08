@@ -69,7 +69,7 @@ export default function UnassignedRequests({ period, newAssignments, setNewAssig
         setNewAssignments(newAssignments.filter(a => a.requestId != requestId));
     }
 
-    const updateAssignments = async () => {
+    const saveAssignments = async () => {
         setIsLoading(true);
         const results = await Promise.all(newAssignments.map((assignment) => {
             return client.models.Request.update({
@@ -152,7 +152,7 @@ export default function UnassignedRequests({ period, newAssignments, setNewAssig
                 <div className='flex flex-col gap-2'>
                     <Button
                         disabled={newAssignments.length == 0 || isLoading}
-                        onClick={updateAssignments}
+                        onClick={saveAssignments}
                     >
                         {isLoading ? 'Loading...' : 'Save Assignments'}
                     </Button>
