@@ -103,23 +103,40 @@ export default function UnassignedRequests({ period, newAssignments, setNewAssig
     return (
         <div className='flex flex-col gap-8'>
             <div className='flex flex-col gap-2'>
-                {unassignedRequests.map(request =>
-                    <RequestMatchingItem
-                        requestId={request.id}
-                        key={request.id}
-                    >
-                        <EquipmentSelect
-                            items={equipmentSelectItems}
-                            value={
-                                newAssignments.find(assignment => assignment.requestId == request.id)?.equipmentId || ''
+                {unassignedRequests.map(request => {
+                    const equipmentTypeRanks = request.equipmentTypeRequests.reduce<{ [equipmentTypeId: string]: number }>(
+                        (result, equipmentTypeRequest) => {
+                            if (equipmentTypeRequest.rank) {
+                                result[equipmentTypeRequest.equipmentType.id] = equipmentTypeRequest.rank;
                             }
-                            onChange={(equipmentId) => {
-                                addNewAssignment(equipmentId, request.id)
-                            }}
-                            onClearValue={() => removeNewAssignment(request.id)}
-                        />
-                    </RequestMatchingItem>
-                )}
+                            return result;
+                        },
+                        {});
+                    const equipmentSelectItemsWithUserRank = equipmentSelectItems.map((equipmentSelectItem) => {
+                        let result = equipmentSelectItem;
+                        if (equipmentSelectItem.equipmentTypeId in equipmentTypeRanks) {
+                            result.userRank = equipmentTypeRanks[equipmentSelectItem.equipmentTypeId];
+                        }
+                        return result;
+                    });
+                    return (
+                        <RequestMatchingItem
+                            requestId={request.id}
+                            key={request.id}
+                        >
+                            <EquipmentSelect
+                                items={equipmentSelectItemsWithUserRank}
+                                value={
+                                    newAssignments.find(assignment => assignment.requestId == request.id)?.equipmentId || ''
+                                }
+                                onChange={(equipmentId) => {
+                                    addNewAssignment(equipmentId, request.id)
+                                }}
+                                onClearValue={() => removeNewAssignment(request.id)}
+                            />
+                        </RequestMatchingItem>
+                    );
+                })}
             </div>
             <div className='flex flex-col gap-4'>
                 <Alert>

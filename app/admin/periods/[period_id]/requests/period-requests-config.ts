@@ -18,5 +18,6 @@ export const periodRequestsSelectionSet = [
 
     'requests.equipmentTypeRequests.equipmentType.id',
     'requests.equipmentTypeRequests.equipmentType.name',
+    'requests.equipmentTypeRequests.rank',
 ] as const;
 export type PeriodRequests = SelectionSet<Schema['Period']['type'], typeof periodRequestsSelectionSet>;

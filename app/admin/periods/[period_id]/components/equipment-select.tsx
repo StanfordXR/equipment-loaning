@@ -55,7 +55,7 @@ export default function EquipmentSelect({ value, items, onChange, onClearValue }
                         <SelectLabel className='flex items-center gap-2'>
                             <div className='uppercase'>{equipmentType.eqiupmentTypeName}</div>
                             {equipmentType.userRank &&
-                                <Badge variant='secondary'>User&apos;s {getUserRankLabel(equipmentType.userRank + 1)} choice</Badge>
+                                <Badge variant='secondary'>User&apos;s {getUserRankLabel(equipmentType.userRank)} choice</Badge>
                             }
                         </SelectLabel>
                         {equipmentType.equipments.map((equipment) => {
