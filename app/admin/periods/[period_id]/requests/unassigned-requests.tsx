@@ -64,9 +64,9 @@ export default function UnassignedRequests({ period, newAssignments, setNewAssig
                 assignmentId: assignment.equipmentId
             });
         }));
-        
+
         let hasErrors = false;
-        results.map(({errors}) => {
+        results.map(({ errors }) => {
             if (errors) {
                 hasErrors = true;
                 handleError(errors);
@@ -77,6 +77,14 @@ export default function UnassignedRequests({ period, newAssignments, setNewAssig
             toast.success('Assignments updated (reload page to see updates)')
         }
         setIsLoading(false);
+    }
+
+    if (unassignedRequests.length == 0) {
+        return (
+            <div className='text-center'>
+                <Subtext>No unassigned requests</Subtext>
+            </div>
+        );
     }
 
     return (
