@@ -15,7 +15,7 @@ export default function AssignedRequests({ period }: { period: PeriodRequests })
             </div>
         );
     }
-    
+
     return (
         <div className='flex flex-col gap-2'>
             {assignedRequests.map((request) =>
@@ -25,7 +25,7 @@ export default function AssignedRequests({ period }: { period: PeriodRequests })
                 >
                     <div className='flex gap-2'>
                         <div>
-                            <span className='font-bold'>{request.assignment.id}</span> ({request.assignment.equipmentType.name})
+                            {request.assignment.id} <span className='text-muted-foreground'>({request.assignment.equipmentType.name})</span>
                         </div>
                         {request.status &&
                             <Badge variant='secondary'>
