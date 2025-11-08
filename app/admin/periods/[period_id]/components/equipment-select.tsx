@@ -1,3 +1,4 @@
+import getUserRankLabel from '@/app/utils/get-user-rank-label';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
@@ -27,21 +28,6 @@ interface EquipmentSelectProps {
     onChange: (equipmentId: string) => void;
     onClearValue: () => void;
 }
-
-const getUserRankLabel = (rank: number) => {
-    // Expects rank >= 1
-    switch (rank) {
-        case 1:
-            return '1st';
-        case 2:
-            return '2nd';
-        case 3:
-            return '3rd';
-        default:
-            return `${rank}th`;
-    }
-}
-
 
 export default function EquipmentSelect({ value, items, onChange, onClearValue }: EquipmentSelectProps) {
     return (
