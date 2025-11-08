@@ -52,8 +52,7 @@ export default function NewPeriodPage() {
     });
 
     if (period.errors) {
-      console.error(period.errors);
-      handleError('Something went wrong, please see the debug console for more info.');
+      handleError(period.errors);
       setIsLoading(false);
       return;
     }
@@ -74,9 +73,7 @@ export default function NewPeriodPage() {
     loanableEquipmentResults.map(({ errors }) => {
       if (errors) {
         // Display the error, but don't prevent redirect
-        console.error(errors);
-        handleError(`Period ${name} was created successfully, but something went wrong when adding loanable
-          equipment. See debug console for more info.`);
+        handleError(errors);
       }
     });
     router.push(`/admin/periods/${periodId}`);
