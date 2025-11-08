@@ -12,7 +12,7 @@ interface PeriodAutoMatchProps {
         requestId: string;
         equipmentTypeRequests: {
             equipmentTypeId: string;
-            rank?: number;
+            rank: number;
         }[];
     }[];
 }
@@ -22,8 +22,6 @@ interface BipartiteEdge {
     right: string;
     weight: number;
 }
-
-const DEFAULT_RANK = 999;
 
 /**
  * Return a list of matched loanable equipment to equipment requests for a given periodID.
@@ -51,7 +49,7 @@ export default async function generateAutoMatch({ availableEquipment, requests }
                 edges.push({
                     left: requestId,
                     right: equipmentId,
-                    weight: rank ?? DEFAULT_RANK
+                    weight: rank
                 })
             });
         });
