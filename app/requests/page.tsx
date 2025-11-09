@@ -29,11 +29,10 @@ export default async function RequestsPage() {
     <Container>
       <Title>StanfordXR Equipment Requests</Title>
       <div className='grid grid-cols-3 gap-4'>
-        <div className='col-span-1 md:col-span-2'>
+        <div className='col-span-3 lg:col-span-2'>
           <CurrentRequests />
-          asdf
         </div>
-        <div className='col-span-1 md:col-span-1'>
+        <div className='col-span-3 lg:col-span-1'>
           <NewRequest periods={periods.data} />
         </div>
       </div>
