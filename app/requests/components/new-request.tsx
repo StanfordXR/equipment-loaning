@@ -76,7 +76,7 @@ export default function NewRequest({ periods }: { periods: Period[] }) {
     }
 
     return (
-        <Card className='gap-4'>
+        <Card className='gap-4 mb-4'>
             <CardHeader>
                 <CardTitle>Create New Request</CardTitle>
             </CardHeader>
