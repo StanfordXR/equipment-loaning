@@ -12,7 +12,9 @@ export default async function RequestLayout({ children }: Children) {
         return (
             <>
                 <UserNavMenu />
-                {children}
+                <div className='px-4 md:px-12'>
+                    {children}
+                </div>
             </>
         );
     }

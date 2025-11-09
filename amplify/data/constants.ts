@@ -4,8 +4,6 @@ export enum PeriodType {
 }
 
 export enum RequestStatus {
-    PENDING = 'PENDING',
-    APPROVED_AWAITING_CHECKOUT = 'APPROVED_AWAITING_CHECKOUT',
     DENIED = 'DENIED',
     CHECKED_OUT = 'CHECKED_OUT',
     RETURNED = 'RETURNED'

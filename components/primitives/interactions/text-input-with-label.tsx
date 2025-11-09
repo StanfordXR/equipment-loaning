@@ -10,14 +10,16 @@ interface TextInputWithLabelProps {
     value: string;
     onChange: (val: string) => void;
     isRequired?: boolean;
+    description?: string;
 }
 
-export function TextInputWithLabel({ label, inputID, placeholder, value, onChange, isRequired = true }: TextInputWithLabelProps) {
+export function TextInputWithLabel({ label, inputID, placeholder, value, onChange, isRequired = true, description }: TextInputWithLabelProps) {
     return (
         <InputLabel
             label={label}
             inputID={inputID}
             isRequired={isRequired}
+            description={description}
         >
             <Input
                 id={inputID}
