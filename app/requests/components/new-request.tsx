@@ -10,6 +10,9 @@ import { AlertCircleIcon } from 'lucide-react';
 import EquipmentTypeList from './equipment-type-list';
 import { TextInputWithLabel } from '@/components/primitives/interactions/text-input-with-label';
 import { Button } from '@/components/ui/button';
+import generateClient from '@/app/utils/generate-client';
+import handleError from '@/app/utils/handle-error';
+import { toast } from 'sonner';
 
 export default function NewRequest({ periods }: { periods: Period[] }) {
     const [periodId, setPeriodId] = useState('');
@@ -26,6 +29,51 @@ export default function NewRequest({ periods }: { periods: Period[] }) {
         !selectedEquipmentTypeIds.includes('') &&
         collateral != ''
     );
+
+    const handleSubmit = async () => {
+        setIsLoading(true);
+
+        const client = generateClient();
+        const request = await client.models.Request.create({
+            periodId,
+            collateralDescription: collateral,
+        });
+
+        if (request.errors) {
+            handleError(request.errors);
+            setIsLoading(false);
+            return;
+        }
+
+        const requestId = request.data?.id;
+        if (!requestId) {
+            handleError('Expected nonnull returned requestId, but got null');
+            setIsLoading(false);
+            return;
+        }
+
+        const equipmentTypeRequsts = await Promise.all(selectedEquipmentTypeIds.map((equipmentTypeId, i) =>
+            client.models.EquipmentTypeRequest.create({ equipmentTypeId, requestId, rank: i+1 })
+        ));
+
+        let hasErrors = false;
+        equipmentTypeRequsts.map(({ errors }) => {
+            if (errors) {
+                handleError(errors);
+                hasErrors = true;
+            }
+        });
+
+        if (!hasErrors) {
+            setPeriodId('');
+            setSelectedEquipmentTypeIds([]);
+            setCollateral('');
+
+            toast.info('Requested created (reload page to see updates)');
+        }
+
+        setIsLoading(false);
+    }
 
     return (
         <Card className='gap-4'>
@@ -89,7 +137,12 @@ export default function NewRequest({ periods }: { periods: Period[] }) {
                                     placeholder="e.g. Jane Stanford's drivers license"
                                 />
 
-                                <Button disabled={isLoading || !canSubmit}>Submit Request</Button>
+                                <Button
+                                    disabled={isLoading || !canSubmit}
+                                    onClick={handleSubmit}
+                                >
+                                    Submit Request
+                                </Button>
                             </>
                     )
                 }
