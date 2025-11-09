@@ -103,6 +103,7 @@ export default function NewPeriodPage() {
               { value: PeriodType.APPROVAL, label: 'General Loaning' },
             ]
           }}
+          value={periodType ?? ''}
           onChange={(val) => {
             setPeriodType(val as PeriodType)
           }} />

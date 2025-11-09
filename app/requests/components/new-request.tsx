@@ -41,6 +41,7 @@ export default function NewRequest({ periods }: { periods: Period[] }) {
                         label: p.name,
                         value: p.id
                     }))}
+                    value={periodId}
                     onChange={setPeriodId}
                 />
                 {

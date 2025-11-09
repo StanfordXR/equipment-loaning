@@ -23,6 +23,7 @@ interface DataSelectProps {
     inputID: string;
     placeholder?: string;
     isRequired?: boolean;  // only shown if label is nonnull
+    value: string;
     onChange: (val: string) => void;
     queryData: () => Promise<Item[]>;
     className?: string;
@@ -33,6 +34,7 @@ export function DataSelect({
     inputID,
     placeholder = 'Select a value...',
     isRequired = true,
+    value,
     onChange,
     queryData,
     className
@@ -48,7 +50,7 @@ export function DataSelect({
     }, []);
 
     const select = (
-        <Select onValueChange={onChange}>
+        <Select value={value} onValueChange={onChange}>
             <SelectTrigger className={cn('w-full', className)}>
                 <SelectValue placeholder={placeholder} />
             </SelectTrigger>

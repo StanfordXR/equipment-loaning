@@ -75,6 +75,7 @@ export default function CreateEquipmentDialog() {
             <DataSelect
                 inputID='equipment-equipment-type'
                 label='Equipment Type'
+                value={equipmentTypeId}
                 queryData={queryEquipmentTypes}
                 onChange={setEquipmentTypeId}
             />
