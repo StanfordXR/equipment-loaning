@@ -7,13 +7,7 @@ export const requestsSelectionSet = [
     'owner',
     'createdAt',
     'period.name',
-    
-    'equipmentTypeRequests.equipmentType.id',
-    'equipmentTypeRequests.equipmentType.name',
-    
     'assignment.id',
-    'assignment.equipmentType.id',
-    'assignment.equipmentType.name',
 ] as const;
 
 
