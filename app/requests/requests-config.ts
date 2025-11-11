@@ -8,6 +8,7 @@ export const requestsSelectionSet = [
     'createdAt',
     'period.name',
     'assignment.id',
+    'pastAssignment.id',
 ] as const;
 
 

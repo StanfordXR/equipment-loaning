@@ -15,6 +15,8 @@ export const periodRequestsSelectionSet = [
     'requests.owner',
     'requests.assignment.equipmentType.name',
     'requests.assignment.id',
+    'requests.pastAssignment.equipmentType.name',
+    'requests.pastAssignment.id',
 
     'requests.equipmentTypeRequests.equipmentType.id',
     'requests.equipmentTypeRequests.equipmentType.name',

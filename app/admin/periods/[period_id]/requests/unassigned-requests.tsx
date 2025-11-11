@@ -25,7 +25,7 @@ export default function UnassignedRequests({ period, newAssignments, setNewAssig
 
     // Here, unassigned requests denote requests that are unassigned at the time of page load --
     // that is, selecting a value from EquipmentSelect will not move the request to Assigned Requests
-    const unassignedRequests = period.requests.filter(r => !r.assignment);
+    const unassignedRequests = period.requests.filter(r => !r.assignment && !r.pastAssignment);
 
     // Create object that maps from equipmentId -> EquipmentSelectItem, then decompose into a list after
     let equipmentSelectItemsObject: { [equipmentId: string]: EquipmentSelectItem } = {};

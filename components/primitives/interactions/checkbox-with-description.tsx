@@ -19,14 +19,14 @@ export default function CheckboxWithDescription({
     className
 }: CheckboxWithLabelProps) {
     return (
-        <div className={cn('flex items-start gap-3', className)}>
+        <div className={cn('flex items-center gap-3', className)}>
             <Checkbox
                 id={inputID}
                 checked={value}
                 onCheckedChange={onChange}
             />
             <div>
-                <Label htmlFor={inputID} className="grid gap-2">
+                <Label htmlFor={inputID} className="grid gap-2 leading-normal">
                     <div>
                         {label} {isRequired && <span className='text-red-500'>*</span>}
                     </div>

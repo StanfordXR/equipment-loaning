@@ -5,15 +5,15 @@ import Header from '@/components/primitives/text/header';
 import Title from '@/components/primitives/text/title';
 import dayjs from 'dayjs';
 import Subtext from '@/components/primitives/text/subtext';
-import { PeriodWithDetails, periodWithDetailsSelectionSet } from './period-details.config';
+import { PeriodWithDetails, periodWithDetailsSelectionSet } from './period-details-config';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Alert, AlertTitle } from '@/components/ui/alert';
 import { AlertCircleIcon, CircleCheckIcon } from 'lucide-react';
-import { ChildrenAndClassName } from '@/components/types';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { cn } from '@/lib/utils';
 import PeriodNotFound from './components/period-not-found';
+import AttributeGrid from '@/components/primitives/attribute-grid';
+import Attribute from '@/components/primitives/attribute';
 
 interface AdminPeriodPageProps {
   params: {
@@ -57,16 +57,16 @@ function PeriodOverview({ period }: { period: PeriodWithDetails }) {
   return (
     <div>
       <Header>Overview</Header>
-      <PeriodAttributeGrid>
-        <PeriodAttribute label='Period Type' value={
+      <AttributeGrid>
+        <Attribute label='Period Type' value={
           period.periodType == PeriodType.MATCH ? 'Hackathon Loaning' : 'General Loaning'
         } />
-        <PeriodAttribute label='Start Date' value={startDateTime} />
-        <PeriodAttribute label='End Date' value={endDateTime} />
-        <PeriodAttribute label='New Requests' value={
+        <Attribute label='Start Date' value={startDateTime} />
+        <Attribute label='End Date' value={endDateTime} />
+        <Attribute label='New Requests' value={
           period.acceptingRequests ? 'Accepting new requests' : 'Not accepting new requests'
         } />
-      </PeriodAttributeGrid>
+      </AttributeGrid>
     </div>
   );
 }
@@ -132,6 +132,7 @@ function PeriodLoanableEquipment({ period }: { period: PeriodWithDetails }) {
 }
 
 function PeriodRequestsSummary({ period }: { period: PeriodWithDetails }) {
+  const unassignedRequests = period.requests.filter((r) => !r.assignment && !r.pastAssignment).length;
   const assignedRequests = period.requests.filter((r) => r.assignment).length;
   const totalRequests = period.requests.length;
 
@@ -144,10 +145,11 @@ function PeriodRequestsSummary({ period }: { period: PeriodWithDetails }) {
         </Subtext>
       </div>
 
-      <PeriodAttributeGrid className='mb-2'>
-        <PeriodAttribute label='Assigned request count' value={`${assignedRequests} assigned`} />
-        <PeriodAttribute label='Unassigned request count' value={`${totalRequests - assignedRequests} unassigned`} />
-      </PeriodAttributeGrid>
+      <AttributeGrid className='mb-2'>
+        <Attribute label='Unassigned request count' value={`${unassignedRequests} unassigned`} />
+        <Attribute label='Assigned (in progress) request count' value={`${assignedRequests} assigned`} />
+        <Attribute label='Assigned (returned) request count' value={`${totalRequests - unassignedRequests - assignedRequests} returned`} />
+      </AttributeGrid>
 
       <Button asChild>
         <Link href={`/admin/periods/${period.id}/requests`}>
@@ -156,22 +158,4 @@ function PeriodRequestsSummary({ period }: { period: PeriodWithDetails }) {
       </Button>
     </div>
   );
-}
-
-function PeriodAttributeGrid({ children, className }: ChildrenAndClassName) {
-  return (
-    <div className={cn('grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-3 gap-y-4 md:gap-y-6', className)}>
-      {children}
-    </div>
-  );
-
-}
-
-function PeriodAttribute({ label, value }: { label: string, value: string }) {
-  return (
-    <div>
-      <div className='text-muted-foreground text-sm font-semibold'>{label}</div>
-      <div>{value}</div>
-    </div>
-  )
 }

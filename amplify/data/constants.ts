@@ -5,6 +5,5 @@ export enum PeriodType {
 
 export enum RequestStatus {
     DENIED = 'DENIED',
-    CHECKED_OUT = 'CHECKED_OUT',
-    RETURNED = 'RETURNED'
+    CHECKED_OUT = 'CHECKED_OUT'
 }

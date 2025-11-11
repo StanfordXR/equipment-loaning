@@ -11,9 +11,21 @@ interface TextInputWithLabelProps {
     onChange: (val: string) => void;
     isRequired?: boolean;
     description?: string;
+    autoFocus?: boolean;
+    onEnter?: () => void;
 }
 
-export function TextInputWithLabel({ label, inputID, placeholder, value, onChange, isRequired = true, description }: TextInputWithLabelProps) {
+export function TextInputWithLabel({
+    label,
+    inputID,
+    placeholder,
+    value,
+    onChange,
+    isRequired = true,
+    description,
+    autoFocus = false,
+    onEnter
+}: TextInputWithLabelProps) {
     return (
         <InputLabel
             label={label}
@@ -25,7 +37,13 @@ export function TextInputWithLabel({ label, inputID, placeholder, value, onChang
                 id={inputID}
                 placeholder={placeholder}
                 value={value}
+                autoFocus={autoFocus}
                 onChange={(e) => onChange(e.target.value)}
+                onKeyDown={(e) => {
+                    if (e.key == 'Enter' && onEnter) {
+                        onEnter();
+                    }
+                }}
             />
         </InputLabel>
     )
