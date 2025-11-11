@@ -132,6 +132,7 @@ function PeriodLoanableEquipment({ period }: { period: PeriodWithDetails }) {
 }
 
 function PeriodRequestsSummary({ period }: { period: PeriodWithDetails }) {
+  const unassignedRequests = period.requests.filter((r) => !r.assignment && !r.pastAssignment).length;
   const assignedRequests = period.requests.filter((r) => r.assignment).length;
   const totalRequests = period.requests.length;
 
@@ -145,8 +146,9 @@ function PeriodRequestsSummary({ period }: { period: PeriodWithDetails }) {
       </div>
 
       <AttributeGrid className='mb-2'>
+        <Attribute label='Unassigned request count' value={`${unassignedRequests} unassigned`} />
         <Attribute label='Assigned request count' value={`${assignedRequests} assigned`} />
-        <Attribute label='Unassigned request count' value={`${totalRequests - assignedRequests} unassigned`} />
+        <Attribute label='Completed (returned) request count' value={`${totalRequests - unassignedRequests - assignedRequests} assigned`} />
       </AttributeGrid>
 
       <Button asChild>

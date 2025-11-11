@@ -64,8 +64,9 @@ export default function EquipmentView({ equipment, onReset }: EquipmentViewProps
         const client = generateClient();
         const { errors } = await client.models.Request.update({
             id: requestId,
-            status: RequestStatus.RETURNED,
-            assignmentId: null
+            status: null,
+            assignmentId: null,
+            pastAssignmentId: equipment.id
         });
 
         if (errors) {
