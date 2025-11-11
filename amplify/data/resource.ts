@@ -28,8 +28,12 @@ const schema = a.schema({
     period: a.belongsTo('Period', 'periodId'),
 
     equipmentTypeRequests: a.hasMany('EquipmentTypeRequest', 'requestId'),
+
     assignmentId: a.id(),
-    assignment: a.belongsTo('Equipment', 'assignmentId')
+    assignment: a.belongsTo('Equipment', 'assignmentId'),
+
+    pastAssignmentId: a.id(),
+    pastAssignment: a.belongsTo('Equipment', 'pastAssignmentId')
   })
     .authorization(allow => [
       allow.owner(),
@@ -69,7 +73,8 @@ const schema = a.schema({
     equipmentType: a.belongsTo('EquipmentType', 'equipmentTypeId'),
 
     periods: a.hasMany('PeriodEquipment', 'equipmentId'),
-    assignment: a.hasOne('Request', 'assignmentId')
+    assignment: a.hasOne('Request', 'assignmentId'),
+    pastAssignments: a.hasMany('Request', 'pastAssignmentId')
   })
     .authorization(allow => [
       allow.group(ADMIN_GROUP),
