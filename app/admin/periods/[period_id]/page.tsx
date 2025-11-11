@@ -147,8 +147,8 @@ function PeriodRequestsSummary({ period }: { period: PeriodWithDetails }) {
 
       <AttributeGrid className='mb-2'>
         <Attribute label='Unassigned request count' value={`${unassignedRequests} unassigned`} />
-        <Attribute label='Assigned request count' value={`${assignedRequests} assigned`} />
-        <Attribute label='Completed (returned) request count' value={`${totalRequests - unassignedRequests - assignedRequests} assigned`} />
+        <Attribute label='Assigned (in progress) request count' value={`${assignedRequests} assigned`} />
+        <Attribute label='Assigned (returned) request count' value={`${totalRequests - unassignedRequests - assignedRequests} returned`} />
       </AttributeGrid>
 
       <Button asChild>
