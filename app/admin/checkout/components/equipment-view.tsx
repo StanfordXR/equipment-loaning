@@ -28,34 +28,55 @@ export default function EquipmentView({ equipment, onReset }: EquipmentViewProps
 
     const onSubmit = async () => {
         setIsLoading(true);
-        const client = generateClient();
+
+        const requestId = equipment.assignment.id;
+        if (!requestId) {
+            handleError('Expected nonnull requestId, but got null');
+            setIsLoading(false);
+            return;
+        }
 
         if (operation == 'checkout') {
-            console.log(equipment.assignment);
-            const requestId = equipment.assignment.id;
-            if (!requestId) {
-                handleError('Expected nonnull requestId, but got null');
-                setIsLoading(false);
-                return;
-            }
-            const { errors } = await client.models.Request.update({
-                // id: 'asdfasdfasdfasdfasdfasdfasdfasdfasdfasdf',
-                id: requestId,
-                status: RequestStatus.CHECKED_OUT
-            });
-
-            if (errors) {
-                handleError(errors);
-                setIsLoading(false);
-                return;
-            }
-
-            toast.success('Equipment successfully checked out');
-            onReset();
+            await checkoutEquipment(requestId);
         } else {
-            // TODO -- implement return
+            await returnEquipment(requestId);
         }
     };
+
+    const checkoutEquipment = async (requestId: string) => {
+        const client = generateClient();
+        const { errors } = await client.models.Request.update({
+            id: requestId,
+            status: RequestStatus.CHECKED_OUT
+        });
+
+        if (errors) {
+            handleError(errors);
+            setIsLoading(false);
+            return;
+        }
+
+        toast.success('Equipment successfully checked out');
+        onReset();
+    };
+
+    const returnEquipment = async (requestId: string) => {
+        const client = generateClient();
+        const { errors } = await client.models.Request.update({
+            id: requestId,
+            status: RequestStatus.RETURNED,
+            assignmentId: null
+        });
+
+        if (errors) {
+            handleError(errors);
+            setIsLoading(false);
+            return;
+        }
+
+        toast.success('Equipment successfully returned');
+        onReset();
+    }
 
     return (
         <div className='flex flex-col gap-6'>
