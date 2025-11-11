@@ -1,19 +1,47 @@
+import generateSSRClient from '@/app/utils/generate-ssr-client';
+import Container from '@/components/primitives/container';
+import Title from '@/components/primitives/text/title';
+import { requestWithDetailsSelectionSet } from './request-details-config';
+import RequestAttributes from './components/request-attributes';
+import Link from 'next/link';
+import { ChevronLeft } from 'lucide-react';
+
 interface RequestPageProps {
-  params: {
-    request_id: string;
-  };
+	params: {
+		request_id: string;
+	};
 }
 
-export default function RequestPage({ params }: RequestPageProps) {
-  return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-6">Request Details</h1>
-      <p className="text-gray-600 mb-4">
-        Viewing request ID: <span className="font-mono">{params.request_id}</span>
-      </p>
-      <p className="text-gray-600">
-        This page will display details for a specific equipment loan request.
-      </p>
-    </div>
-  );
+export default async function RequestPage({ params }: RequestPageProps) {
+	const client = generateSSRClient();
+
+	const { data: request, errors } = await client.models.Request.get({ id: params.request_id }, {
+		selectionSet: requestWithDetailsSelectionSet
+	});
+
+	if (errors) {
+		throw new Error(JSON.stringify(errors));
+	}
+
+	if (!request) {
+		return (
+			<div className='flex items-center justify-center w-full h-full text-muted-foreground'>
+				<div className='text-center'>
+					<div>Request not found.</div>
+					<div>Request id: <span className='font-mono'>{params.request_id}</span></div>
+				</div>
+			</div>
+		);
+	}
+
+	return (
+		<Container width='tight'>
+			<Link href='/requests' className='text-sm text-muted-foreground py-1 mb-0.5 w-fit flex items-center gap-0.5'>
+				<ChevronLeft size={16} />
+				Back
+			</Link>
+			<Title>Request for {request.period.name}</Title>
+			<RequestAttributes request={request} />
+		</Container>
+	);
 }
