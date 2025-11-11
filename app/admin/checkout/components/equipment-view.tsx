@@ -82,6 +82,11 @@ export default function EquipmentView({ equipment, onReset }: EquipmentViewProps
                         }
                     />
                     <Attribute
+                        label='Period'
+                        value={equipment.assignment.period.name}
+                    />
+                    
+                    <Attribute
                         label='User collateral'
                         value={equipment.assignment.collateralDescription}
                     />
@@ -92,7 +97,7 @@ export default function EquipmentView({ equipment, onReset }: EquipmentViewProps
                     <AlertTitle>
                         Equipment will be <span className='font-bold'>
                             {operation == 'checkout' ? 'checked out' : 'returned'}
-                        </span> for {equipment.assignment.period.name}
+                        </span>
                     </AlertTitle>
                 </Alert>
 
