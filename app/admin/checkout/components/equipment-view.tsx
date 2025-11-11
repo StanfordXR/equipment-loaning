@@ -20,7 +20,8 @@ export default function EquipmentView({ equipment, onReset }: EquipmentViewProps
     // Assumed here that corresponding request status is either null or CHECKED_OUT,
     // and that assignment is nonnull
 
-    const [isConfirmed, setIsConfirmed] = useState(false);
+    const [isInfoConfirmed, setIsInfoConfirmed] = useState(false);
+    const [isCollateralConfirmed, setIsCollateralConfirmed] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
 
     const operation = (!equipment.assignment.status ? 'checkout' : 'return');
@@ -97,20 +98,36 @@ export default function EquipmentView({ equipment, onReset }: EquipmentViewProps
 
             </div>
 
-            <div>
+            <div className='flex flex-col gap-3'>
                 <CheckboxWithDescription
-                    inputID='checkout-confirm'
+                    inputID='checkout-info-confirm'
                     label={
                         operation == 'checkout' ?
                             `I've confirmed that the above information is correct`
                             : `I've confirmed that the equipment and accessories are accounted for`}
                     isRequired={true}
-                    value={isConfirmed}
+                    value={isInfoConfirmed}
                     onChange={(val) => {
                         if (val == 'indeterminate') {
-                            handleError('Expected boolean for checkout-confirm state, but got indeterminate');
+                            handleError('Expected boolean for checkout-info-confirm state, but got indeterminate');
                         } else {
-                            setIsConfirmed(val)
+                            setIsInfoConfirmed(val)
+                        }
+                    }}
+                />
+                <CheckboxWithDescription
+                    inputID='checkout-collateral-confirm'
+                    label={
+                        operation == 'checkout' ?
+                            `The user's collateral has been received and securely stored`
+                            : `The user's collateral has been returned`}
+                    isRequired={true}
+                    value={isCollateralConfirmed}
+                    onChange={(val) => {
+                        if (val == 'indeterminate') {
+                            handleError('Expected boolean for checkout-collateral-confirm state, but got indeterminate');
+                        } else {
+                            setIsCollateralConfirmed(val)
                         }
                     }}
                 />
@@ -118,7 +135,7 @@ export default function EquipmentView({ equipment, onReset }: EquipmentViewProps
 
             <div className='flex flex-col gap-2'>
                 <Button
-                    disabled={!isConfirmed || isLoading}
+                    disabled={!isInfoConfirmed || !isCollateralConfirmed || isLoading}
                     onClick={onSubmit}
                 >
                     {isLoading ? 'Loading...' : (
