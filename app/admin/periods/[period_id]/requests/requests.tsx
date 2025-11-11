@@ -84,7 +84,7 @@ function Matchmaker({ period, setNewAssignments }: { period: PeriodRequests, set
         }));
 
     const requests = period.requests
-        .filter(request => !request.assignment)
+        .filter(request => !request.assignment && !request.pastAssignment)
         .map(request => ({
             requestId: request.id,
             equipmentTypeRequests: request.equipmentTypeRequests.map(equipmentTypeRequest => ({
