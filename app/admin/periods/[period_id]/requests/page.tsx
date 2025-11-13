@@ -27,6 +27,14 @@ export default async function AdminPeriodRequestsPage({ params }: AdminPeriodReq
 		return <PeriodNotFound periodID={params.period_id} />;
 	}
 
+	const userDisplayNames = await client.queries.getUserDisplayNames({
+		usernames: period.data.requests.map(r => r.owner).filter(r => r != null)
+	});
+
+	if (userDisplayNames.errors) {
+		throw new Error(JSON.stringify(userDisplayNames.errors));
+	}
+
 	if (period.data.periodType == PeriodType.APPROVAL) {
 		return (
 			<div className='flex items-center justify-center w-full h-full text-muted-foreground'>
@@ -37,5 +45,5 @@ export default async function AdminPeriodRequestsPage({ params }: AdminPeriodReq
 		)
 	};
 
-	return <Requests period={period.data} />;
+	return <Requests period={period.data} userDisplayNames={userDisplayNames.data ?? []} />;
 }

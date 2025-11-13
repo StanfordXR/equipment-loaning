@@ -5,8 +5,9 @@ import { RequestMatchingItem } from '../components/request-matching-item';
 import { PeriodRequests } from './period-requests-config';
 import Subtext from '@/components/primitives/text/subtext';
 import { RequestStatus } from '@/amplify/data/constants';
+import { UserDisplayNames } from '../display-names-config';
 
-export default function AssignedRequests({ period }: { period: PeriodRequests }) {
+export default function AssignedRequests({ period, userDisplayNames }: { period: PeriodRequests, userDisplayNames: UserDisplayNames }) {
     const assignedRequests = period.requests.filter(r => r.assignment || r.pastAssignment);
 
     if (assignedRequests.length == 0) {
@@ -29,6 +30,7 @@ export default function AssignedRequests({ period }: { period: PeriodRequests })
                 return (
                     <RequestMatchingItem
                         requestId={request.id}
+                        displayName={userDisplayNames.find(u => request.owner == u?.username)?.displayName ?? 'USER NOT FOUND'}
                         key={request.id}
                     >
                         <div className='flex gap-2'>
