@@ -12,14 +12,16 @@ import { AlertCircleIcon } from 'lucide-react';
 import generateClient from '@/app/utils/generate-client';
 import handleError from '@/app/utils/handle-error';
 import { toast } from 'sonner';
+import { UserDisplayNames } from '../display-names-config';
 
 interface UnassignedRequestsProps {
     period: PeriodRequests;
     newAssignments: Assignment[];
     setNewAssignments: (assignments: Assignment[]) => void;
+    userDisplayNames: UserDisplayNames
 }
 
-export default function UnassignedRequests({ period, newAssignments, setNewAssignments }: UnassignedRequestsProps) {
+export default function UnassignedRequests({ period, newAssignments, setNewAssignments, userDisplayNames }: UnassignedRequestsProps) {
     const client = generateClient();
     const [isLoading, setIsLoading] = useState(false);
 
@@ -122,6 +124,7 @@ export default function UnassignedRequests({ period, newAssignments, setNewAssig
                     return (
                         <RequestMatchingItem
                             requestId={request.id}
+                            displayName={userDisplayNames.find(u => request.owner == u?.username)?.displayName ?? 'USER NOT FOUND'}
                             key={request.id}
                         >
                             <EquipmentSelect

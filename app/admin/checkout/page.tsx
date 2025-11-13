@@ -9,6 +9,7 @@ import EquipmentView from './components/equipment-view';
 
 export default function AdminCheckoutPage() {
   const [equipment, setEquipment] = useState<Equipment>();
+  const [userDisplayName, setUserDisplayName] = useState('');
 
   return (
     <Container className='h-full'>
@@ -28,12 +29,17 @@ export default function AdminCheckoutPage() {
               equipment ?
                 <EquipmentView
                   equipment={equipment}
+                  userDisplayName={userDisplayName}
                   onReset={() => {
                     setEquipment(undefined)
+                    setUserDisplayName('')
                   }}
                 />
                 :
-                <EquipmentLookup setEquipment={setEquipment} />
+                <EquipmentLookup
+                  setEquipment={setEquipment}
+                  setUserDisplayName={setUserDisplayName}
+                />
             }
           </CardContent>
         </Card>

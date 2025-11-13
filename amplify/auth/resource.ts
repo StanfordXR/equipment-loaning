@@ -1,5 +1,6 @@
 import { defineAuth, secret } from "@aws-amplify/backend";
 import { ADMIN_GROUP } from './constants';
+import { getUserDisplayNames } from '../functions/resource';
 
 export const auth = defineAuth({
   loginWith: {
@@ -34,5 +35,9 @@ export const auth = defineAuth({
     }
   },
 
-  groups: [ADMIN_GROUP]
+  groups: [ADMIN_GROUP],
+
+  access: (allow) => [
+    allow.resource(getUserDisplayNames).to(['listUsers'])
+  ]
 });

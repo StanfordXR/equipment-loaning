@@ -1,6 +1,7 @@
 import { type ClientSchema, a, defineData } from '@aws-amplify/backend';
 import { PeriodType, RequestStatus } from './constants'
 import { ADMIN_GROUP } from './../auth/constants';
+import { getUserDisplayNames } from '../functions/resource';
 
 const schema = a.schema({
   Period: a.model({
@@ -93,7 +94,21 @@ const schema = a.schema({
     .authorization(allow => [
       allow.owner(),
       allow.group(ADMIN_GROUP)
-    ])
+    ]),
+
+
+  usernameToDisplayName: a.customType({
+    username: a.string(),
+    displayName: a.string()
+  }),
+  
+  getUserDisplayNames: a.query()
+    .arguments({
+      usernames: a.string().required().array().required(),
+    })
+    .returns(a.ref('usernameToDisplayName').array())
+    .authorization(allow => [allow.group(ADMIN_GROUP)])
+    .handler(a.handler.function(getUserDisplayNames))
 });
 
 export type Schema = ClientSchema<typeof schema>;

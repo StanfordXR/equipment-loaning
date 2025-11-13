@@ -19,13 +19,14 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { AlertCircleIcon } from 'lucide-react';
+import { UserDisplayNames } from '../display-names-config';
 
 export interface Assignment {
     equipmentId: string;
     requestId: string;
 }
 
-export default function Requests({ period }: { period: PeriodRequests }) {
+export default function Requests({ period, userDisplayNames }: { period: PeriodRequests, userDisplayNames: UserDisplayNames }) {
     const [newAssignments, setNewAssignments] = useState<Assignment[]>([]);
 
     return (
@@ -42,7 +43,10 @@ export default function Requests({ period }: { period: PeriodRequests }) {
                                 </Header>
                             </AccordionTrigger>
                             <AccordionContent>
-                                <AssignedRequests period={period} />
+                                <AssignedRequests
+                                    period={period}
+                                    userDisplayNames={userDisplayNames}
+                                />
                             </AccordionContent>
                         </AccordionItem>
 
@@ -58,6 +62,7 @@ export default function Requests({ period }: { period: PeriodRequests }) {
                                     period={period}
                                     newAssignments={newAssignments}
                                     setNewAssignments={setNewAssignments}
+                                    userDisplayNames={userDisplayNames}
                                 />
                             </AccordionContent>
                         </AccordionItem>

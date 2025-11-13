@@ -9,9 +9,12 @@ import { RequestStatus } from '@/amplify/data/constants';
 
 interface EquipmentLookupProps {
     setEquipment: (val: Equipment) => void;
+    setUserDisplayName: (val: string) => void;
 }
 
-export default function EquipmentLookup({ setEquipment }: EquipmentLookupProps) {
+const FALLBACK_DISPLAY_NAME = 'USERNAME NOT FOUND';
+
+export default function EquipmentLookup({ setEquipment, setUserDisplayName }: EquipmentLookupProps) {
     const [equipmentId, setEquipmentId] = useState('');
     const [isLoading, setIsLoading] = useState(false);
 
@@ -23,23 +26,46 @@ export default function EquipmentLookup({ setEquipment }: EquipmentLookupProps) 
         setIsLoading(true);
 
         const client = generateClient();
-        const { data, errors } = await client.models.Equipment.get({ id: equipmentId }, {
+        const equipment = await client.models.Equipment.get({ id: equipmentId }, {
             selectionSet: equipmentSelectionSet
         });
 
-        if (errors) {
-            handleError(errors);
-        } else if (!data) {
+        if (equipment.errors) {
+            handleError(equipment.errors);
+        } else if (!equipment.data) {
             toast.warning('Equipment ID not found');
-        } else if (!data.assignment) {
+        } else if (!equipment.data.assignment) {
             toast.warning(`Equipment ${equipmentId} is not currently matched and cannot be checked out`);
-        } else if (data.assignment.status != null && data.assignment.status != RequestStatus.CHECKED_OUT) {
-            handleError(`Expected assignment request status to be one of null, CHECKED_OUT, but got ${data.assignment.status}`);
+        } else if (equipment.data.assignment.status != null && equipment.data.assignment.status != RequestStatus.CHECKED_OUT) {
+            handleError(`Expected assignment request status to be one of null, CHECKED_OUT, but got ${equipment.data.assignment.status}`);
         } else {
-            setEquipment(data);
+            let displayName = FALLBACK_DISPLAY_NAME;
+
+            const username = equipment.data.assignment.owner;
+            if (username) {
+                displayName = await getUserDisplayName(username, client);
+            }
+
+            setUserDisplayName(displayName);
+            setEquipment(equipment.data);
+        }
+        setIsLoading(false);
+    }
+
+    const getUserDisplayName = async (username: string, client: ReturnType<typeof generateClient>) => {
+        const userDisplayName = await client.queries.getUserDisplayNames({ usernames: [username] });
+
+        if (userDisplayName.errors) {
+            handleError(userDisplayName.errors);
+        } else if (!userDisplayName.data) {
+            toast.warning('Expected nonnull user display name data, but got null');
+        } else if (userDisplayName.data.length != 1) {
+            toast.warning(`Expected exactly one user display name return value, but got ${userDisplayName.data.length}`);
+        } else {
+            return userDisplayName.data[0]?.displayName ?? FALLBACK_DISPLAY_NAME;
         }
 
-        setIsLoading(false);
+        return FALLBACK_DISPLAY_NAME;
     }
 
     return (
