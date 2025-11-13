@@ -169,6 +169,7 @@ export default function NewPeriodPage() {
             </Subtext>
           </div>
           <LoanableEquipmentChecklist
+            value={loanableEquipment}
             onChange={setLoanableEquipment}
           />
         </div>

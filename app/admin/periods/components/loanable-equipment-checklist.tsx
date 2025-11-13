@@ -8,6 +8,7 @@ import { useEffect, useState } from 'react';
 
 
 interface LoanableEquipmentChecklistProps {
+    value: string[];
     onChange: (equipmentIds: string[]) => void;  // write only
 }
 
@@ -17,15 +18,10 @@ type EquipmentTypeAndEquipment = {
     equipmentIds: string[];
 }
 
-export default function LoanableEquipmentChecklist({ onChange }: LoanableEquipmentChecklistProps) {
+export default function LoanableEquipmentChecklist({ value, onChange }: LoanableEquipmentChecklistProps) {
     const client = generateClient();
     const [equipmentByTypes, setEquipmentByTypes] = useState<EquipmentTypeAndEquipment[]>([]);
     const [isLoading, setIsLoading] = useState(true);
-    const [selectedEquipmentIds, setSelectedEquipmentIds] = useState<string[]>([]);
-
-    useEffect(() => {
-        onChange(selectedEquipmentIds);
-    }, [selectedEquipmentIds]);
 
     useEffect(() => {
         const getEquipmentTypesAndEquipment = async () => {
@@ -55,15 +51,15 @@ export default function LoanableEquipmentChecklist({ onChange }: LoanableEquipme
     const checkEquipmentIdsIfNotAlready = (equipmentIds: string[]) => {
         let addedEquipmentIds: string[] = [];
         equipmentIds.map((e) => {
-            if (!selectedEquipmentIds.includes(e)) {
+            if (!value.includes(e)) {
                 addedEquipmentIds.push(e);
             }
         });
-        setSelectedEquipmentIds(selectedEquipmentIds.concat(addedEquipmentIds));
+        onChange(value.concat(addedEquipmentIds));
     }
 
     const uncheckEquipmentIdsIfNotAlready = (equipmentIds: string[]) => {
-        setSelectedEquipmentIds(selectedEquipmentIds.filter(
+        onChange(value.filter(
             (id) => !equipmentIds.includes(id)
         ));
     }
@@ -80,7 +76,7 @@ export default function LoanableEquipmentChecklist({ onChange }: LoanableEquipme
         <div className='max-h-[350px] overflow-auto py-1'>
             {equipmentByTypes.map((equipmentType) => {
                 const numEquipmentsSelected = equipmentType.equipmentIds.filter(
-                    (equipmentId) => selectedEquipmentIds.includes(equipmentId)
+                    (equipmentId) => value.includes(equipmentId)
                 );
 
                 let checkedState: CheckedState;
@@ -119,14 +115,14 @@ export default function LoanableEquipmentChecklist({ onChange }: LoanableEquipme
                                             <CheckboxWithDescription
                                                 inputID={`loanable-equipment-checklist-equipment-${equipmentId}`}
                                                 label={equipmentId}
-                                                value={selectedEquipmentIds.includes(equipmentId)}
+                                                value={value.includes(equipmentId)}
                                                 onChange={(val) => {
                                                     if (val == 'indeterminate') {
                                                         handleError('Expected non-indeterminate new checked state for Equipment checkbox, but got indeterminate');
                                                     } else if (val) {
-                                                        setSelectedEquipmentIds(selectedEquipmentIds.concat([equipmentId]));
+                                                        onChange(value.concat([equipmentId]));
                                                     } else {
-                                                        setSelectedEquipmentIds(selectedEquipmentIds.filter((id) => id != equipmentId));
+                                                        onChange(value.filter((id) => id != equipmentId));
                                                     }
                                                 }}
                                             />
