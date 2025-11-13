@@ -9,6 +9,7 @@ export const equipmentSelectionSet = [
     
     'assignment.id',
     'assignment.status',
+    'assignment.owner',
     'assignment.collateralDescription',
     'assignment.period.name'
 ] as const;

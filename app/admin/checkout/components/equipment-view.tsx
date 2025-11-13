@@ -13,10 +13,11 @@ import { toast } from 'sonner';
 
 interface EquipmentViewProps {
     equipment: Equipment;
+    userDisplayName: string;
     onReset: () => void;
 }
 
-export default function EquipmentView({ equipment, onReset }: EquipmentViewProps) {
+export default function EquipmentView({ equipment, userDisplayName, onReset }: EquipmentViewProps) {
     // Assumed here that corresponding request status is either null or CHECKED_OUT,
     // and that assignment is nonnull
 
@@ -84,6 +85,14 @@ export default function EquipmentView({ equipment, onReset }: EquipmentViewProps
             <div className='flex flex-col gap-y-3'>
                 <AttributeGrid maxCols={2}>
                     <Attribute
+                        label='Username'
+                        value={userDisplayName}
+                    />
+                    <Attribute
+                        label='Period'
+                        value={equipment.assignment.period.name}
+                    />
+                    <Attribute
                         label='Equipment Type'
                         value={equipment.equipmentType.name}
                     />
@@ -92,22 +101,18 @@ export default function EquipmentView({ equipment, onReset }: EquipmentViewProps
                         value={equipment.id}
                     />
                     <Attribute
-                        label='Notes'
+                        label='Equipment Notes'
                         value={equipment.notes ?? 'N/A'}
                     />
                     <Attribute
-                        label='Accessories'
+                        label='Equipment Accessories'
                         value={
                             equipment.accessories && equipment.accessories.length > 0 ?
                                 equipment.accessories?.join(', ')
                                 : 'N/A'
                         }
                     />
-                    <Attribute
-                        label='Period'
-                        value={equipment.assignment.period.name}
-                    />
-                    
+
                     <Attribute
                         label='User collateral'
                         value={equipment.assignment.collateralDescription}
