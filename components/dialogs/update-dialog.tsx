@@ -5,7 +5,7 @@ import CRUDDialog from './crud-dialog';
 
 interface UpdateDialogProps {
     name: string;
-    description: string;
+    description?: string;
     children: ReactNode;
     onSubmit: () => Promise<boolean>;  // bool denotes if creation was successful
     canSubmit: boolean;

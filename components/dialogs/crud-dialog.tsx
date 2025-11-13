@@ -18,7 +18,7 @@ import { toast } from 'sonner';
 
 interface CRUDDialogProps {
     title: string;
-    description: string;
+    description?: string;
     submitButtonLabel: string;
     successMessage: string;
     children: ReactNode;
