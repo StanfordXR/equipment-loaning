@@ -104,7 +104,7 @@ const schema = a.schema({
   
   getUserDisplayNames: a.query()
     .arguments({
-      usernames: a.string().array(),
+      usernames: a.string().required().array().required(),
     })
     .returns(a.ref('usernameToDisplayName').array())
     .authorization(allow => [allow.group(ADMIN_GROUP)])
