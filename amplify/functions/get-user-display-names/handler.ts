@@ -7,7 +7,7 @@ import {
 
 type ReturnType = { username: string; displayName: string }[];
 const DEFAULT_DISPLAY_NAME = 'USER NOT FOUND';
-const NO_USERNAME_DISPLAY_NAME = 'UNNAMED USER';
+const EMPTY_DISPLAY_NAME = 'UNNAMED USER';
 
 const client = new CognitoIdentityProviderClient();
 
@@ -43,7 +43,7 @@ export const handler: Schema['getUserDisplayNames']['functionHandler'] = async (
             const displayName = [givenNameAttr, familyNameAttr].join(' ').trim();
             results.push({
                 username: user.Username,
-                displayName: displayName == '' ? NO_USERNAME_DISPLAY_NAME : displayName
+                displayName: displayName == '' ? EMPTY_DISPLAY_NAME : displayName
             });
         });
 
