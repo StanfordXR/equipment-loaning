@@ -85,7 +85,7 @@ export default function EquipmentView({ equipment, userDisplayName, onReset }: E
             <div className='flex flex-col gap-y-3'>
                 <AttributeGrid maxCols={2}>
                     <Attribute
-                        label='Username'
+                        label='User name'
                         value={userDisplayName}
                     />
                     <Attribute
