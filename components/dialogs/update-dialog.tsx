@@ -3,7 +3,7 @@
 import { ReactNode } from 'react';
 import CRUDDialog from './crud-dialog';
 
-interface CreateDialogProps {
+interface UpdateDialogProps {
     name: string;
     description: string;
     children: ReactNode;
@@ -11,12 +11,12 @@ interface CreateDialogProps {
     canSubmit: boolean;
 }
 
-export default function CreateDialog({ name, description, children, onSubmit, canSubmit }: CreateDialogProps) {
+export default function UpdateDialog({ name, description, children, onSubmit, canSubmit }: UpdateDialogProps) {
     return <CRUDDialog
-        title={`Create ${name}`}
+        title={`Update ${name}`}
         description={description}
-        submitButtonLabel='Create'
-        successMessage={`New ${name.toLowerCase()} created (reload page to see updates)`}
+        submitButtonLabel='Update'
+        successMessage={`Updated ${name.toLowerCase()} (reload page to see updates)`}
         children={children}
         onSubmit={onSubmit}
         canSubmit={canSubmit}
