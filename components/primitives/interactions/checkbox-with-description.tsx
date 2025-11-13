@@ -26,7 +26,7 @@ export default function CheckboxWithDescription({
                 onCheckedChange={onChange}
             />
             <div>
-                <Label htmlFor={inputID} className="grid gap-2 leading-normal">
+                <Label htmlFor={inputID} className="grid gap-0.5 leading-normal">
                     <div>
                         {label} {isRequired && <span className='text-red-500'>*</span>}
                     </div>
