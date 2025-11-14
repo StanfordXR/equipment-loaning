@@ -12,11 +12,13 @@ import Link from 'next/link';
 import Subtext from '@/components/primitives/text/subtext';
 import { Children } from '@/components/types';
 import { Button } from '@/components/ui/button';
+import { AMPLIFY_DATA_LIST_LIMIT } from '@/app/utils/constants';
 
 export default async function AdminPeriodsPage() {
   const client = generateSSRClient();
   const periods = await client.models.Period.list({
-    selectionSet: periodSelectionSet
+    selectionSet: periodSelectionSet,
+    limit: AMPLIFY_DATA_LIST_LIMIT
   });
 
   if (periods.errors) {

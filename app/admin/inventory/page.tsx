@@ -5,16 +5,19 @@ import Container from '@/components/primitives/container';
 import Title from '@/components/primitives/text/title';
 import { equipmentSelectionSet } from './tables/equipment-config';
 import EquipmentTable from './tables/equipment-table';
+import { AMPLIFY_DATA_LIST_LIMIT } from '@/app/utils/constants';
 
 export default async function AdminInventoryPage() {
 	const client = generateSSRClient();
 
 	const [equipmentTypes, equipment] = await Promise.all([
 		client.models.EquipmentType.list({
-			selectionSet: equipmentTypeSelectionSet
+			selectionSet: equipmentTypeSelectionSet,
+			limit: AMPLIFY_DATA_LIST_LIMIT
 		}),
 		client.models.Equipment.list({
-			selectionSet: equipmentSelectionSet
+			selectionSet: equipmentSelectionSet,
+			limit: AMPLIFY_DATA_LIST_LIMIT
 		})
 	]);
 
