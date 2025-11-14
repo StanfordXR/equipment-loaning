@@ -25,6 +25,8 @@ export default function UnassignedRequests({ period, newAssignments, setNewAssig
     const client = generateClient();
     const [isLoading, setIsLoading] = useState(false);
 
+    console.log(period)
+
     // Here, unassigned requests denote requests that are unassigned at the time of page load --
     // that is, selecting a value from EquipmentSelect will not move the request to Assigned Requests
     const unassignedRequests = period.requests.filter(r => !r.assignment && !r.pastAssignment);
@@ -114,13 +116,12 @@ export default function UnassignedRequests({ period, newAssignments, setNewAssig
                             return result;
                         },
                         {});
-                    const equipmentSelectItemsWithUserRank = equipmentSelectItems.map((equipmentSelectItem) => {
-                        let result = equipmentSelectItem;
-                        if (equipmentSelectItem.equipmentTypeId in equipmentTypeRanks) {
-                            result.userRank = equipmentTypeRanks[equipmentSelectItem.equipmentTypeId];
-                        }
-                        return result;
-                    });
+                        const equipmentSelectItemsWithUserRank = equipmentSelectItems.map((equipmentSelectItem) => {
+                            return {
+                                ...equipmentSelectItem,
+                                userRank: equipmentTypeRanks[equipmentSelectItem.equipmentTypeId] ?? undefined
+                            };
+                        });
                     return (
                         <RequestMatchingItem
                             requestId={request.id}
