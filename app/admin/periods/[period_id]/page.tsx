@@ -80,7 +80,7 @@ function PeriodLoanableEquipment({ period }: { period: PeriodWithDetails }) {
     <div>
       <div className='mb-2'>
         <div className='flex justify-between items-center'>
-          <Header className='mb-1'>Loanable Equipment</Header>
+          <Header className='mb-1'>Loanable Equipment ({equipment.length})</Header>
           <UpdateLoanableEquipmentDialog
             periodId={period.id}
             initialLoanableEquipment={equipment.map(e => e.id)}
