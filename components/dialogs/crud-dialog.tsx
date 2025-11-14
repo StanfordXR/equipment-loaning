@@ -21,12 +21,22 @@ interface CRUDDialogProps {
     description?: string;
     submitButtonLabel: string;
     successMessage: string;
+    showIndicatesRequiredField?: boolean;
     children: ReactNode;
     onSubmit: () => Promise<boolean>;  // bool denotes if operation was successful
     canSubmit: boolean;
 }
 
-export default function CRUDDialog({ title, description, submitButtonLabel, successMessage, children, onSubmit, canSubmit }: CRUDDialogProps) {
+export default function CRUDDialog({
+    title,
+    description,
+    submitButtonLabel,
+    successMessage,
+    showIndicatesRequiredField = true,
+    children,
+    onSubmit,
+    canSubmit
+}: CRUDDialogProps) {
     const [open, setOpen] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
 
@@ -54,7 +64,7 @@ export default function CRUDDialog({ title, description, submitButtonLabel, succ
                     <DialogTitle>{title}</DialogTitle>
                     <DialogDescription className='flex flex-col gap-1'>
                         {description}
-                        <span><span className='text-red-500'>*</span> indicates a required field</span>
+                        {showIndicatesRequiredField && <span><span className='text-red-500'>*</span> indicates a required field</span>}
                     </DialogDescription>
                 </DialogHeader>
 
