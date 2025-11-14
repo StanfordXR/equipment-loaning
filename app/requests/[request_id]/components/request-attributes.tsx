@@ -72,7 +72,7 @@ export default function RequestAttributes({ request }: { request: RequestWithDet
                             .sort((a, b) => !a.rank ? 0 : (!b.rank ? 0 : a.rank - b.rank))
                             .map(({ rank, equipmentType }) => {
                                 return (
-                                    <Item variant='outline'>
+                                    <Item variant='outline' key={rank}>
                                         <ItemContent>
                                             <ItemTitle>{equipmentType.name}</ItemTitle>
                                             {
