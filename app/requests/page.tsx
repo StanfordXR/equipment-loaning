@@ -22,9 +22,6 @@ export default async function RequestsPage() {
     throw new Error(JSON.stringify(periods.errors));
   }
 
-  console.log(periods);
-
-
   return (
     <Container>
       <Title>StanfordXR Equipment Requests</Title>
