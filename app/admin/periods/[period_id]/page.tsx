@@ -14,6 +14,7 @@ import Link from 'next/link';
 import PeriodNotFound from './components/period-not-found';
 import AttributeGrid from '@/components/primitives/attribute-grid';
 import Attribute from '@/components/primitives/attribute';
+import UpdateLoanableEquipmentDialog from './components/update-loanable-equipment-dialog';
 
 interface AdminPeriodPageProps {
   params: {
@@ -78,7 +79,13 @@ function PeriodLoanableEquipment({ period }: { period: PeriodWithDetails }) {
   return (
     <div>
       <div className='mb-2'>
-        <Header className='mb-1'>Loanable Equipment</Header>
+        <div className='flex justify-between items-center'>
+          <Header className='mb-1'>Loanable Equipment</Header>
+          <UpdateLoanableEquipmentDialog
+            periodId={period.id}
+            initialLoanableEquipment={equipment.map(e => e.id)}
+          />
+        </div>
         <Subtext>Equipment that can be checked out in this period.</Subtext>
       </div>
 
