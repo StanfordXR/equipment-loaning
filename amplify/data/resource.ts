@@ -21,14 +21,36 @@ const schema = a.schema({
     ]),
 
   Request: a.model({
-    id: a.id().required(),
+    id: a.id().required()
+      .authorization(allow => [
+        allow.owner(),
+        allow.group(ADMIN_GROUP)
+      ]),
+    collateralDescription: a.string().required()
+      .authorization(allow => [
+        allow.owner(),
+        allow.group(ADMIN_GROUP)
+      ]),
+
+    periodId: a.id().required()
+      .authorization(allow => [
+        allow.owner(),
+        allow.group(ADMIN_GROUP)
+      ]),
+    period: a.belongsTo('Period', 'periodId')
+      .authorization(allow => [
+        allow.owner(),
+        allow.group(ADMIN_GROUP)
+      ]),
+
+    equipmentTypeRequests: a.hasMany('EquipmentTypeRequest', 'requestId')
+      .authorization(allow => [
+        allow.owner(),
+        allow.group(ADMIN_GROUP)
+      ]),
+
+    // Admin only
     status: a.enum(Object.values(RequestStatus)),
-    collateralDescription: a.string().required(),
-
-    periodId: a.id().required(),
-    period: a.belongsTo('Period', 'periodId'),
-
-    equipmentTypeRequests: a.hasMany('EquipmentTypeRequest', 'requestId'),
 
     assignmentId: a.id(),
     assignment: a.belongsTo('Equipment', 'assignmentId'),
@@ -37,7 +59,7 @@ const schema = a.schema({
     pastAssignment: a.belongsTo('Equipment', 'pastAssignmentId')
   })
     .authorization(allow => [
-      allow.owner(),
+      allow.owner().to(['get', 'list']),
       allow.group(ADMIN_GROUP)
     ]),
 
@@ -101,7 +123,7 @@ const schema = a.schema({
     username: a.string(),
     displayName: a.string()
   }),
-  
+
   getUserDisplayNames: a.query()
     .arguments({
       usernames: a.string().required().array().required(),

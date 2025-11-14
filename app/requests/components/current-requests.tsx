@@ -27,7 +27,6 @@ export default async function CurrentRequests() {
             return await getCurrentUser(contextSpec);
         }
     });
-    console.log(username);
 
     const { data, errors } = await client.models.Request.list({
         selectionSet: requestsSelectionSet
