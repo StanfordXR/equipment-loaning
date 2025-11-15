@@ -11,6 +11,7 @@ import { Badge } from '@/components/ui/badge';
 import Link from 'next/link';
 import Subtext from '@/components/primitives/text/subtext';
 import { RequestStatus } from '@/amplify/data/constants';
+import { AMPLIFY_DATA_LIST_LIMIT } from '@/app/utils/constants';
 
 export default async function CurrentRequests() {
     const client = generateSSRClient();
@@ -29,7 +30,8 @@ export default async function CurrentRequests() {
     });
 
     const { data, errors } = await client.models.Request.list({
-        selectionSet: requestsSelectionSet
+        selectionSet: requestsSelectionSet,
+        limit: AMPLIFY_DATA_LIST_LIMIT
     });
 
     // NOTE -- Amplify data doesn't seem to allow filtering by `owner`, so doing

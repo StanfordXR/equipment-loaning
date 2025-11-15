@@ -1,4 +1,5 @@
 'use client'
+import { AMPLIFY_DATA_LIST_LIMIT } from '@/app/utils/constants';
 import generateClient from '@/app/utils/generate-client';
 import handleError from '@/app/utils/handle-error';
 import CheckboxWithDescription from '@/components/primitives/interactions/checkbox-with-description';
@@ -26,7 +27,8 @@ export default function LoanableEquipmentChecklist({ value, onChange }: Loanable
     useEffect(() => {
         const getEquipmentTypesAndEquipment = async () => {
             const { data, errors } = await client.models.EquipmentType.list({
-                selectionSet: ['id', 'name', 'equipments.id']
+                selectionSet: ['id', 'name', 'equipments.id'],
+                limit: AMPLIFY_DATA_LIST_LIMIT
             });
 
             if (errors) {

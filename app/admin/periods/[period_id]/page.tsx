@@ -80,7 +80,7 @@ function PeriodLoanableEquipment({ period }: { period: PeriodWithDetails }) {
     <div>
       <div className='mb-2'>
         <div className='flex justify-between items-center'>
-          <Header className='mb-1'>Loanable Equipment</Header>
+          <Header className='mb-1'>Loanable Equipment ({equipment.length})</Header>
           <UpdateLoanableEquipmentDialog
             periodId={period.id}
             initialLoanableEquipment={equipment.map(e => e.id)}
@@ -116,19 +116,22 @@ function PeriodLoanableEquipment({ period }: { period: PeriodWithDetails }) {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {equipment.map((e) => {
-            return (
-              <TableRow key={e.id}>
-                <TableCell>{e.equipmentType.name}</TableCell>
-                <TableCell>{e.id}</TableCell>
-                <TableCell>{e.assignment ?
-                  <div className='flex items-center gap-1'>Checked Out</div>
-                  :
-                  <div className='flex items-center gap-1'>Available</div>
-                }</TableCell>
-              </TableRow>
-            );
-          })}
+          {equipment
+            .sort((a, b) =>
+              a.equipmentType.name.localeCompare(b.equipmentType.name)
+            ).map((e) => {
+              return (
+                <TableRow key={e.id}>
+                  <TableCell>{e.equipmentType.name}</TableCell>
+                  <TableCell>{e.id}</TableCell>
+                  <TableCell>{e.assignment ?
+                    <div className='flex items-center gap-1'>Checked Out</div>
+                    :
+                    <div className='flex items-center gap-1'>Available</div>
+                  }</TableCell>
+                </TableRow>
+              );
+            })}
         </TableBody>
       </Table>
       {equipment.length == 0 &&

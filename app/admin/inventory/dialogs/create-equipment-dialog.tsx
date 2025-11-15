@@ -1,7 +1,7 @@
 'use client'
 
 import useAmplify from '@/app/hooks/use-amplify';
-import { AMPLIFY_ERR_DDB_CONDITION_CHECK_FAILED } from '@/app/utils/constants';
+import { AMPLIFY_DATA_LIST_LIMIT, AMPLIFY_ERR_DDB_CONDITION_CHECK_FAILED } from '@/app/utils/constants';
 import generateClient from '@/app/utils/generate-client';
 import handleError from '@/app/utils/handle-error';
 import CreateDialog from '@/components/dialogs/create-dialog'
@@ -42,7 +42,8 @@ export default function CreateEquipmentDialog() {
 
     const queryEquipmentTypes = async () => {
         const result = await client.models.EquipmentType.list({
-            selectionSet: ['id', 'name']
+            selectionSet: ['id', 'name'],
+            limit: AMPLIFY_DATA_LIST_LIMIT
         });
 
         if (result.errors)

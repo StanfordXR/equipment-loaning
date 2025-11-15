@@ -13,10 +13,15 @@ export default function EquipmentTable({ data }: EquipmentTableProps) {
     return (
         <div>
             <div className='flex mb-2'>
-                <Header className='mb-0 grow'>Equipment</Header>
+                <Header className='mb-0 grow'>Equipment ({data.length})</Header>
                 <CreateEquipmentDialog />
             </div>
-            <DataTable columns={equipmentColumns} data={data} />
+            <DataTable
+                columns={equipmentColumns}
+                data={data.sort((a, b) =>
+                    a.equipmentType.name.localeCompare(b.equipmentType.name))
+                }
+            />
         </div>
     );
 }

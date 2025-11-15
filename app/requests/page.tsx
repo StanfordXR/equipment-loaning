@@ -4,12 +4,14 @@ import CurrentRequests from './components/current-requests';
 import NewRequest from './components/new-request';
 import generateSSRClient from '../utils/generate-ssr-client';
 import { periodSelectionSet } from './period-config';
+import { AMPLIFY_DATA_LIST_LIMIT } from '../utils/constants';
 
 export default async function RequestsPage() {
   const client = generateSSRClient();
 
   const periods = await client.models.Period.list({
     selectionSet: periodSelectionSet,
+    limit: AMPLIFY_DATA_LIST_LIMIT,
     filter: {
       and: [
         { acceptingRequests: { eq: true } },
