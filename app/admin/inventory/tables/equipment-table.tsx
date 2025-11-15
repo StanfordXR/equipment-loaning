@@ -16,7 +16,12 @@ export default function EquipmentTable({ data }: EquipmentTableProps) {
                 <Header className='mb-0 grow'>Equipment ({data.length})</Header>
                 <CreateEquipmentDialog />
             </div>
-            <DataTable columns={equipmentColumns} data={data} />
+            <DataTable
+                columns={equipmentColumns}
+                data={data.sort((a, b) =>
+                    a.equipmentType.name.localeCompare(b.equipmentType.name))
+                }
+            />
         </div>
     );
 }
